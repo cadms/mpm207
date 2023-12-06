@@ -1,0 +1,22 @@
+---
+title: "Lab 1"
+author: ""
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Set the document options for chunks
+knitr::opts_chunk$set(warning = F, message = F)
+# Load the libraries you will use
+library(dplyr); library(ggplot2); library(ggpubr)
+```
+
+# OBJECTIVES
+  
+  - Understand the sources, nature and limitations of different types of epidemiological data.
+  - Be able to conduct descriptive analyses to explore and visualize characteristics and space-time patterns in epidemiologic data. 
+  
+# INSTRUCTIONS
+  
+  - Follow the guidelines, do the exercises, and answer the questions below (please provide a figure/table/print screen to support your statements). Remember to send the answers in a pdf file entitled "yourlastname_lab1" using CANVAS before 12:00pm, January 19th.
+  - Do not hesitate to ask the instructors if you have any questions.
