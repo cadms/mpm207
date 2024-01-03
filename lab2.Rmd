@@ -1,7 +1,19 @@
 ---
 title: "MPM 207 Lab 2"
-format: html
+output:
+  html_document: 
+    toc: true
+    toc_float: true
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
+
+```{r echo=F, message=F, warning=F}
+library(kableExtra)
+library(dplyr)
+```
+
 
 # OBJECTIVES
   
@@ -16,9 +28,10 @@ format: html
   - Do not hesitate to ask the TA/instructors if you have any question.
   
 
-Given the following key points (and the Table below) obtained during the interview with the farm owner respond the questions below. 
-•	A pig farm with aprox. 230 animals in the province of Nuoro (Sardinia, Italy). 
-•	A call has been received on October 12th, 2017, after observing clinical signs and unusual mortalities in several animals. 
+Given the following key points (and the Table below) obtained during the interview with the farm owner respond the questions below.
+
+  -	A pig farm with aprox. 230 animals in the province of Nuoro (Sardinia, Italy). 
+  -	A call has been received on October 12th, 2017, after observing clinical signs and unusual mortalities in several animals. 
 
 ## Key points:
   
@@ -29,18 +42,18 @@ Given the following key points (and the Table below) obtained during the intervi
   - There were no changes in feed or management during the last month: animals eat, as always, pasture, leftovers from the house and from the restaurant that the owner has and, pelleted feed (only for boars) as it is reflected in the following table (as provided by farmer):
 
 
-	Ate		Did NOT eat
-Feed	# Healthy	#  Sick		# Healthy	# Sick
-Pasture	177	1		34	18
-Leftovers from the restaurant	48	11		163	8
-Leftover from the house	24	7		187	12
-Pelleted feed	8	0		203	19
-
-
-
-
-
-
+```{r echo=F}
+data.frame(
+  Feed = c("Pasture", "Keftovers from restaurant", "Leftovers from house", "Pelleted feed"),
+  healthAte = c(177, 48, 24, 8),
+  sickAte = c(1, 11, 7, 0),
+  healthNot = c(34, 163, 187, 203),
+  sickNot = c(18, 8, 12, 19)
+) %>% 
+  kable("html", col.names = c("Feed", "# Healthy", "# Sick", "# Healthy", "# Sick")) %>% 
+  kable_styling("striped", full_width = F) %>% 
+  add_header_above(c("", "Ate" = 2, "Did NOT eat" = 2))
+```
 
 
 # QUESTIONS
@@ -57,6 +70,7 @@ NOTE: Provide the tables and/or figures to support your answers (e.g. by using t
 
 5.	Now, do the same than question 4 but using RStudio (or just R-language if preferred). I recommend you to read this short introduction (if you did not read it yet) to R and RStudio before start working with the program: https://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf (if you are interested to know more, you can read this more complete manual at home: http://cran.r-project.org/doc/manuals/R-intro.html. Remember to provide a screenshot of your code and all your tables. Give an interpretation of all the measures of strength of the association and measures of effect and total effect that you obtained related with leftovers from the house [TIP: use the following code as an example, and the help() function in R as needed, to conduct the analysis and support your interpretations]. Get familiar with all the functions that you are using to better track and understand what you are doing, use the help() function [e.g. help(matrix)] to explore all functions you don’t know. 
 
+```
 install.packages("epiR")
 library(epiR)
 t1<-as.table(matrix(c(11,48,8,163), nrow = 2, byrow=TRUE))
@@ -64,24 +78,75 @@ res1<-epi.2by2(dat=t1,method="case.control",conf.level=0.95, units=100)
 print(res1)
 summary(res1)
 help(epi.2by2)
+```
 
 6.	Given all the information obtained so far and the analyses conducted in the previous questions what would you conclude that is the most likely source(s) of infection in this outbreak?. Justify your answer with 3-4 sentences.
 
-Remember to send the lab assignment before 12:00pm, January 26th 
+*Remember to send the lab assignment before 12:00pm, January 26th* 
 
 
-```{r}
+# Apendix I: R code
 
+## Installing the epiR
+
+First we will install the `epiR` library. Remember that to install a library we use the function `install.packages("library")`, where the name of the library goes as an argument inside the function. 
+
+```{r install epiR, eval = F}
+install.packages("epiR")
 ```
 
-install.packages("epiR")
+## Loading the library
+
+Once the library is installed, we will verify if the installation was done correctly by loading it with the function `library()`
+
+```{r load epiR}
 library(epiR)
+```
+
+If you did not get any error messages, means that the library was loaded correctly.
+
+## Computing ORs
+
+To compute the Odds ratio, we need to input our data as a table, and then use the function `epi.2by2()`:
+
+```{r computing ORs}
+# Input the data from the table above (Pasture)
+t1 <- matrix(
+  c(18,34,1,177), # These are the observations for the 
+  nrow = 2, byrow=TRUE # We specify that we want 2 rows and the order of the input data
+)
+
+# Now we use the function to compute the odds ratios
+res1<-epi.2by2(
+  dat=t1, 
+  method="case.control", 
+  conf.level=0.95, 
+  units=100
+)
+
+# Lets examine the result:
+res1
+```
+
+```{r}
+summary(res1)
+```
+
+For more information about the `epi.2by2()` function, you can type on the console
+
+```{r eval=F}
+?epi.2by2
+```
+
+
+Now do the same for each of the other rows by replacing the values used in the input table for the values per row of the exposure table
+
+```{r code,  eval = F}
 
 t1<-as.table(matrix(c(18,34,1,177), nrow = 2, byrow=TRUE))
-res1<-epi.2by2(dat=t1,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+res1<-epi.2by2(dat=t1, method="case.control", conf.level=0.95, units=100)
 print(res1)
 summary(res1)
-help(epi.2by2)
 
 
 t11<-as.table(matrix(c(1,177,18,34), nrow = 2, byrow=TRUE))
@@ -105,5 +170,6 @@ t4<-as.table(matrix(c(19,203,0,8), nrow = 2, byrow=TRUE))
 res4<-epi.2by2(dat=t4,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
 print(res4)
 summary(res4)
+```
 
 
