@@ -14,7 +14,8 @@ library(kableExtra); library(dplyr)
 knitr::opts_chunk$set(echo = F)
 ```
 
-# COURSE OBJECTIVES:
+## Objectives:
+
 By the end of the course, participants should be able to:
   
   1. Identify the different sources and nature of epidemiological data and understand their respective advantages and limitations.
@@ -23,9 +24,88 @@ By the end of the course, participants should be able to:
   4. Calculate and understand the risk measures in different types of studies and how to deal with confounders or effect modifiers.
   5.  Perform simple and advanced statistical and epidemiological analyses with R-language.
 
-# COURSE FORMAT:
+## Format:
+
 The class will meet Thursdays, from 1:10-4:00 pm in 2020 Valley Hall. The course will consist of lecture/laboratories or discussion/laboratory sessions in which epidemiologic problems will be analyzed and discussed by the student. Please install the necessary software and use your own laptop for each session; you will need it for the labs. Guidelines, lectures, and other documentation to assist you in the lab will be provided in the course website:
  https://canvas.ucdavis.edu/courses/848091   
 
-# COURSE GRADING:
+## Grading:
+
 The laboratory assignment constitutes 90% of the final grade. There will be no examinations. The remaining 10% of the grade is based on participation during the in-class activities and discussions. Course grading is noncompetitive; course grades will be assigned based on mastery of the material. We expect that students who have an average score of 90 or greater will receive an A- or A, and those with an average score of 80-90 will receive B-, B, or B+. Students who do not demonstrate mastery of the material will receive a grade of C or below. Lab assignments should be sent to the instructors using CANVAS or, if CANVAS fails or is not available, by email before the due day/time. Late assignments will be penalized with a lower score (they will lose 20% of their value for each day beyond the due day/time). There will be no option for resubmissions or make-ups of laboratory assignments after the due day/time.  
+
+# Schedule
+
+```{r class schedule}
+data.frame(
+  Date = c(
+    "Jan 10", 
+    "Jan 17", 
+    "Jan 24", 
+    "Jan 31", 
+    "Feb 07",
+    "Feb 14",
+    "Feb 21",
+    "Feb 28",
+    "Mar 6",
+    "Mar 18"
+  ),
+  Topic = c(
+    "Course introduction. Understanding sources and nature of epidemiological data. Exploratory analyses with Disease BioPortal",
+    "Outbreak investigation. Testing hypothesis and computing measures of association.", 
+    "Getting started with R & RStudio (introduction to Rmd)", 
+    "Cleaning, manipulating, summarizing, and visualizing data",
+    "Selecting the right analytical method: Fundamentals and interpretation of results.",
+    "Applying linear regression models",
+    "Applying logistic regression models and multilevel models",
+    "Mapping data in R",
+    "Introduction to spatial and space-time cluster analyses using SaTScan",
+    "Introduction to social network analysis"
+  ),
+  Software = c(
+    "Disease Bioportal", 
+    "WinEpi",
+    "Rstudio",
+    "RStudio",
+    "RStudio",
+    "RStudio",
+    "RStudio",
+    "RStudio",
+    "RStudio",
+    "RStudio"
+  ),
+  Instructor = c(
+    "Martínez-Lopez", 
+    "Martínez-Lopez + Gomez-Vazquez",
+    "Gomez + Grisi", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez", 
+    "Martínez-Lopez"
+  )
+) %>%
+  kbl("html", escape = FALSE, col.names = c('Date', 'Topic', 'Software/Tools', 'Instructor')) %>%
+  kable_paper(full_width = F, lightable_options = c('hover')) 
+  # column_spec(1, bold = T, border_right = T) %>%
+  # column_spec(2, border_right = T) %>%
+  # column_spec(3, border_right = T) %>%
+  # column_spec(4, border_right = T) %>%
+  # row_spec(1, bold = T, extra_css = "border-bottom: 1px solid") %>%
+  # row_spec(c(4,6, 8), background = "#F6F5FA", italic = T)
+```
+
+## Tools/Software used:
+
+Please install the following programs in your computer at the beginning of the course or at the beginning of the corresponding lab:
+-	R-language* Download from http://www.r-project.org/
+-	RStudio* Download from http://www.rstudio.com/products/RStudio/
+*It is recommended to install first R-language and then RStudio. 
+-	SaTScan: Download from: www.satscan.org  
+-	Disease BioPortal: Online tool, available at:  http://bioportal.ucdavis.edu (no need of pre-installation)
+-	Google Earth. Online tool available at: https://earth.google.com/web/ (no need of pre-installation)
+
+Please contact instructors or SVM information technology (svmithelp@ucdavis.edu) if you need assistance to install these programs. 
+
+

@@ -11,12 +11,48 @@ knitr::opts_chunk$set(warning = F, message = F)
 library(dplyr); library(ggplot2); library(ggpubr)
 ```
 
-# OBJECTIVES
+## OBJECTIVES
   
   - Understand the sources, nature and limitations of different types of epidemiological data.
   - Be able to conduct descriptive analyses to explore and visualize characteristics and space-time patterns in epidemiologic data. 
   
-# INSTRUCTIONS
+## INSTRUCTIONS
   
   - Follow the guidelines, do the exercises, and answer the questions below (please provide a figure/table/print screen to support your statements). Remember to send the answers in a pdf file entitled "yourlastname_lab1" using CANVAS before 12:00pm, January 19th.
   - Do not hesitate to ask the instructors if you have any questions.
+  
+## Access to the Disease BioPortal®
+  
+  1.	Open your browser (the use of Google Chrome is preferred) 
+  2.	Go to http://bioportal.ucdavis.edu 
+  3.	Please sign up to create your Disease BioPortal account and then log in using the username and password that you created.
+  4.	Today, we will use the database referred to as “Alaska C”.    
+  
+## Queries, tables, charts and mapping tools
+  
+  -	We will start our exercise working with diagnostic data of an endemic disease in the US swine industry: Porcine Reproductive and Respiratory Syndrome (PRRS). We will use a de-identified database named "Alaska C". First, create a new dashboard using “Create dashboard” in the menu bar and spend some time to becoming familiar with the type of information available in “Alaska C” database using the “Data Grid” component. Use Add Component --> Data Grid and select the database “Alaska C” in the "Sources" and click "Submit".  Notice that the resultant data grid has multiple tabs: Sites, Cases, Samples, Test results, Case Decisions, Site Decisions. Spend some time to check the data contained in each of those tables. 
+  -	*QUESTION 1:* How many sites and cases are in “Alaska C”?  What is the most recent case date ("Date Received") in “Alaska C”?
+  -	When exploring the Data Grid component notice the following features:
+    -	Sort by each column by clicking on the column heading.
+    -	Re-order columns by dragging and dropping the column heading.
+    -	Hide columns by unselecting them from the drop down at the column heading.
+    -	Export data to excel (csv format) with the “Download” button at the top right of this component (Options menu).
+    -	Duplicate component to your current dashboard using the "Duplicate component" option in the Options menu.
+    -	Using this same "Options" menu, you can modify your database or Rename your data grid
+    -	Expand the box to fill the page and minimize the box back to size, clicking the “Maximize” squared icon located in the top right.
+  -	Now, play a bit with the "Filtering" option to change the data to be used/visualized. In the top right corner of your component within the Options panel select “Modify Data”. Now, you can “Add Filter”. For example, select just Sow Farm sites (i.e., Site --> Farm Type - equal to any of – Sow Farm). Spend some time creating different subsets that you may consider interesting (e.g. by RFLP, date received, etc.). You can preview your table or click “Submit” to visualize the new Data Grid with the specific filters. 
+  - The distribution of cases by type of site, epidemic curve and other graphs of interest may be visualized by adding a “chart”. On the "Add Component" at the top of the dashboard choose “Chart”; remove any filter to your Alaska C database (if applicable) and then click “Submit”. Select “Site” “Farm Type” as X-Axis and “Cases” as Y-Axis and click “Create Component”. Add other chart component doing the same but this time selecting “Case”  “Date Received” by month in the X-Axis and “Cases” in the Y-Axis. Finally, add other chart with “Test Results” “Result Value” in the X-Axis and “Test Results” in the Y-Axis. (Tip: you can rename your charts so you keep better track of what data is represented in each one). *QUESTION 2:*  At a very rapid view, where (in which site types) there were more cases submitted? 
+  - Try to extract more information from your graphs using “Options” in the bottom right. For example, try to create a stacking plot with the temporal trend of cases by Farm type using Group By Site  Farm type; then select Stacking Normal). Spend some time to play with the graphs. Hover over the bars to get specific information on a point.  Zoom in or select a section of bars with the mouse to take a closer look.  Then, reset the zoom.  You can also add an individual time slider to the chart. Now change the search options for the graph, X and Y axis and/or grouping options as appropriate to answer *QUESTION 3:* Generate a bar graph displaying the number of samples per RFLP and Farm Type.
+  - Now, let’s try to rapidly visualize the spatial distribution of PRRS cases by adding a Map to the Dashboard.  On the ribbon at the top of the dashboard choose Add Component --> Map. Now keep the Layer type as "Sites" and click “Ok”. Keep the same database “Alaska C”  Submit and in the next window use the option “Group By” and select “Site” “Farm Type”. Then click “Create Component”. Expand the map to take up the full dashboard.
+  - Try to zoom in and out to explore in more detail the specific information available for each site. Notice that you can zoom in or out by using the scroll button of your mouse over the map or using the “Highlight mode” button. You can also change the base terrain map to satellite map with or without labels or even change to street view (-yellow icon man- in those areas that is available). QUESTION 4. What is the herd size (i.e. number of heads) at the site that is furthest south in this database?
+  - Add a layer in the bottom right of the map using “Add Layer”. Now change layer type to “cases”, using the same database and the default name and color and click “Create Component”. Unclick the sites layer to fully visualize the new cases layer. Use the time-slider at the bottom to dynamically visualize the evolution of events over space and time in your study area. QUESTION 5. Provide two maps: one displaying the sites in the Alaska C database labeled by site name and head number and other with the layer of cases occurring after January 1st, 2013 over the heatmap and 1 mile buffer (but with no markers) of all the sites in the background.
+  - Using the play button, generate a video to visualize the spatial distribution of events over time. Note: There are different options available for viewing in the drop down at the far right of the time-slider. Try playing before and after adjusting the step length to one-week vs one month and with and without “lock start” selected (Reset the time slider to include all cases when you’re done).
+  - Now familiarize yourself with the remainder of the dashboard ribbon at the top of the window and the other available components.  Notice you can do the following:
+    - Add additional components
+    - Start a new dashboard, load and save an existing dashboard or duplicate the current dashboard.
+    - Change your layout based on one of the standard ones available or move the box of the components by dragging and dropping the top ribbon of each individual box.
+    - Show/hide component headers/toolbars
+  - Now, save your dashboard (suggestion: use Your Initials_exercise1)
+
+
+

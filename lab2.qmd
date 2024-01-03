@@ -1,0 +1,109 @@
+---
+title: "MPM 207 Lab 2"
+format: html
+---
+
+# OBJECTIVES
+  
+  - Develop critical and systematic thinking to conduct outbreak investigations
+  - Identify the bias and limitations of the data obtained during an outbreak investigation 
+  - Use analytical methods to test hypothesis of the most likely sources of infection
+  - Explore some R packages specific for epidemiology
+
+# INSTRUCTIONS
+  
+  - Follow the guidelines, do the exercises, and answer the questions. Remember to send the answers using a pdf file named "YOUR_LAST_NAME_LAB2.pdf" through CANVAS before 12:00pm, January 26th.
+  - Do not hesitate to ask the TA/instructors if you have any question.
+  
+
+Given the following key points (and the Table below) obtained during the interview with the farm owner respond the questions below. 
+•	A pig farm with aprox. 230 animals in the province of Nuoro (Sardinia, Italy). 
+•	A call has been received on October 12th, 2017, after observing clinical signs and unusual mortalities in several animals. 
+
+## Key points:
+  
+  - There is a lot of wild boar in the area.
+  - Two new animals have been introduced during the last week coming from Poland. They are in the same box than the sick ones, but they appear to be healthy. The owner also brought semen from his cousin’s farm located in the Russian Federation 3 weeks ago.
+  - The farm share pastures with other three neighbors that also have pigs.
+  - The owner shares the boar with the neighbor farm.
+  - There were no changes in feed or management during the last month: animals eat, as always, pasture, leftovers from the house and from the restaurant that the owner has and, pelleted feed (only for boars) as it is reflected in the following table (as provided by farmer):
+
+
+	Ate		Did NOT eat
+Feed	# Healthy	#  Sick		# Healthy	# Sick
+Pasture	177	1		34	18
+Leftovers from the restaurant	48	11		163	8
+Leftover from the house	24	7		187	12
+Pelleted feed	8	0		203	19
+
+
+
+
+
+
+
+
+# QUESTIONS
+
+NOTE: Provide the tables and/or figures to support your answers (e.g. by using the print screen key).
+
+1.	Briefly describe two frequent types of bias that may occur during your outbreak investigation (the following article may give you an idea of the typical bias associated with outbreak investigations and help you to support your answer: http://www.tandfonline.com/doi/pdf/10.1080/09603120120110013)
+
+2.	Use OIE-WAHIS database (https://wahis.oie.int/) to evaluate the sanitary status of Italy, Poland and Russian Federation regarding swine diseases from Jan, 1st 2016 to October 12th 2017. (TIP: use “Analytics”  “Disease situation”, then you can filter by country selecting Italy, Poland and Russian Federation, by animal group “swine” and year). Is there any disease that you may suspect to be present or have been introduced into Sardinia coming from Poland or Russian Federation? Provide the table with the disease status in those countries for 2016 and 2017 (e.g. the easiest is to export the data to excel and use the pivot table function to summarize the information you got by country, disease and semester).
+
+3.	Considering the information contained in the table provided by the owner (above), which type of study design you may use to examine the potential association between the different types of feed and disease? Justify your answer.
+
+4.	Given your answer in question 3, use WinEpi (http://www.winepi.net/uk/index.htm) to calculate the adequate measure of association between the different types of feed and disease. [TIP: use the Observational studies option under the “Risk estimation” section with a 95% confidence level]. Make sure to provide the screenshot of the 4 computed result screens. Are the results valid?, justify your answer. Give an interpretation of the correspondent measures of strength of the association for the results related with pasture and leftovers from the restaurant. 
+
+5.	Now, do the same than question 4 but using RStudio (or just R-language if preferred). I recommend you to read this short introduction (if you did not read it yet) to R and RStudio before start working with the program: https://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf (if you are interested to know more, you can read this more complete manual at home: http://cran.r-project.org/doc/manuals/R-intro.html. Remember to provide a screenshot of your code and all your tables. Give an interpretation of all the measures of strength of the association and measures of effect and total effect that you obtained related with leftovers from the house [TIP: use the following code as an example, and the help() function in R as needed, to conduct the analysis and support your interpretations]. Get familiar with all the functions that you are using to better track and understand what you are doing, use the help() function [e.g. help(matrix)] to explore all functions you don’t know. 
+
+install.packages("epiR")
+library(epiR)
+t1<-as.table(matrix(c(11,48,8,163), nrow = 2, byrow=TRUE))
+res1<-epi.2by2(dat=t1,method="case.control",conf.level=0.95, units=100)
+print(res1)
+summary(res1)
+help(epi.2by2)
+
+6.	Given all the information obtained so far and the analyses conducted in the previous questions what would you conclude that is the most likely source(s) of infection in this outbreak?. Justify your answer with 3-4 sentences.
+
+Remember to send the lab assignment before 12:00pm, January 26th 
+
+
+```{r}
+
+```
+
+install.packages("epiR")
+library(epiR)
+
+t1<-as.table(matrix(c(18,34,1,177), nrow = 2, byrow=TRUE))
+res1<-epi.2by2(dat=t1,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+print(res1)
+summary(res1)
+help(epi.2by2)
+
+
+t11<-as.table(matrix(c(1,177,18,34), nrow = 2, byrow=TRUE))
+res11<-epi.2by2(dat=t11,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+print(res11)
+summary(res11)
+
+
+t2<-as.table(matrix(c(11,48,8,163), nrow = 2, byrow=TRUE))
+res2<-epi.2by2(dat=t2,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+print(res2)
+summary(res2)
+
+
+t3<-as.table(matrix(c(7,24,12,187), nrow = 2, byrow=TRUE))
+res3<-epi.2by2(dat=t3,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+print(res3)
+summary(res3)
+
+t4<-as.table(matrix(c(19,203,0,8), nrow = 2, byrow=TRUE))
+res4<-epi.2by2(dat=t4,method="case.control",conf.level=0.95, units=100, homogeneity="breslow.day")
+print(res4)
+summary(res4)
+
+
