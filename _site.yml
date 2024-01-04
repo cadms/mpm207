@@ -6,10 +6,10 @@ output:
     self_contained: no  
     theme: flatly  
 navbar:
-  title: CADMS
   logo:
-    image: Images/cadms-left.png
+    image: img/cadms.png
     href: https://cadms.vetmed.ucdavis.edu
+  title: "<img id=\"logo\" style=\"width: 30px;\" src=\"img/cadms-logo.png\" />"
   left:
   - text: Home
     href: index.html
