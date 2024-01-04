@@ -44,15 +44,16 @@ Given the following key points (and the Table below) obtained during the intervi
 
 ```{r echo=F}
 data.frame(
-  Feed = c("Pasture", "Keftovers from restaurant", "Leftovers from house", "Pelleted feed"),
+  Feed = c("Pasture", "Leftovers from restaurant", "Leftovers from house", "Pelleted feed"),
   healthAte = c(177, 48, 24, 8),
   sickAte = c(1, 11, 7, 0),
   healthNot = c(34, 163, 187, 203),
   sickNot = c(18, 8, 12, 19)
 ) %>% 
   kable("html", col.names = c("Feed", "# Healthy", "# Sick", "# Healthy", "# Sick")) %>% 
-  kable_styling("striped", full_width = F) %>% 
-  add_header_above(c("", "Ate" = 2, "Did NOT eat" = 2))
+  kable_styling(bootstrap_options = "bordered", full_width = F) %>% 
+  row_spec(row = 0, background = "#0060A0A0", color = "white") %>% 
+  add_header_above(header = c("", "Ate" = 2, "Did NOT eat" = 2), background = "#0060A0A0", color = "white")
 ```
 
 
@@ -84,6 +85,7 @@ help(epi.2by2)
 
 *Remember to send the lab assignment before 12:00pm, January 26th* 
 
+_____________
 
 # Apendix I: R code
 
@@ -103,7 +105,7 @@ Once the library is installed, we will verify if the installation was done corre
 library(epiR)
 ```
 
-If you did not get any error messages, means that the library was loaded correctly.
+You might get some messages, but if you did not get any error, means that the library was loaded correctly.
 
 ## Computing ORs
 
@@ -128,6 +130,8 @@ res1<-epi.2by2(
 res1
 ```
 
+You can obtain more information of the results using the function `summary()` 
+
 ```{r}
 summary(res1)
 ```
@@ -141,7 +145,7 @@ For more information about the `epi.2by2()` function, you can type on the consol
 
 Now do the same for each of the other rows by replacing the values used in the input table for the values per row of the exposure table
 
-```{r code,  eval = F}
+```{r code,  eval = F, include = F}
 
 t1<-as.table(matrix(c(18,34,1,177), nrow = 2, byrow=TRUE))
 res1<-epi.2by2(dat=t1, method="case.control", conf.level=0.95, units=100)

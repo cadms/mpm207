@@ -418,36 +418,36 @@ animals eat, as always, pasture, leftovers from the house and from the
 restaurant that the owner has and, pelleted feed (only for boars) as it
 is reflected in the following table (as provided by farmer):</li>
 </ul>
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
 </th>
-<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; color: white !important;padding-right: 4px; padding-left: 4px; background-color: rgba(0, 96, 160, 0.63) !important;" colspan="2">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Ate
 </div>
 </th>
-<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; color: white !important;padding-right: 4px; padding-left: 4px; background-color: rgba(0, 96, 160, 0.63) !important;" colspan="2">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Did NOT eat
 </div>
 </th>
 </tr>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:left;color: white !important;background-color: rgba(0, 96, 160, 0.63) !important;">
 Feed
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;color: white !important;background-color: rgba(0, 96, 160, 0.63) !important;">
 # Healthy
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;color: white !important;background-color: rgba(0, 96, 160, 0.63) !important;">
 # Sick
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;color: white !important;background-color: rgba(0, 96, 160, 0.63) !important;">
 # Healthy
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;color: white !important;background-color: rgba(0, 96, 160, 0.63) !important;">
 # Sick
 </th>
 </tr>
@@ -472,7 +472,7 @@ Pasture
 </tr>
 <tr>
 <td style="text-align:left;">
-Keftovers from restaurant
+Leftovers from restaurant
 </td>
 <td style="text-align:right;">
 48
@@ -597,6 +597,7 @@ with 3-4 sentences.</li>
 </ol>
 <p><em>Remember to send the lab assignment before 12:00pm, January
 26th</em></p>
+<hr />
 </div>
 <div id="apendix-i-r-code" class="section level1">
 <h1>Apendix I: R code</h1>
@@ -619,8 +620,8 @@ done correctly by loading it with the function
 <pre><code>## Type help(epi.about) for summary information</code></pre>
 <pre><code>## Type browseVignettes(package = &#39;epiR&#39;) to learn how to use epiR for applied epidemiological analyses</code></pre>
 <pre><code>## </code></pre>
-<p>If you did not get any error messages, means that the library was
-loaded correctly.</p>
+<p>You might get some messages, but if you did not get any error, means
+that the library was loaded correctly.</p>
 </div>
 <div id="computing-ors" class="section level2">
 <h2>Computing ORs</h2>
@@ -657,6 +658,8 @@ res1</code></pre>
 ## Fisher exact test that OR = 1: Pr&gt;chi2 = &lt;0.001
 ##  Wald confidence limits
 ##  CI: confidence interval</code></pre>
+<p>You can obtain more information of the results using the function
+<code>summary()</code></p>
 <pre class="r"><code>summary(res1)</code></pre>
 <pre><code>## $massoc.detail
 ## $massoc.detail$OR.strata.wald
@@ -709,33 +712,6 @@ can type on the console</p>
 <pre class="r"><code>?epi.2by2</code></pre>
 <p>Now do the same for each of the other rows by replacing the values
 used in the input table for the values per row of the exposure table</p>
-<pre class="r"><code>t1&lt;-as.table(matrix(c(18,34,1,177), nrow = 2, byrow=TRUE))
-res1&lt;-epi.2by2(dat=t1, method=&quot;case.control&quot;, conf.level=0.95, units=100)
-print(res1)
-summary(res1)
-
-
-t11&lt;-as.table(matrix(c(1,177,18,34), nrow = 2, byrow=TRUE))
-res11&lt;-epi.2by2(dat=t11,method=&quot;case.control&quot;,conf.level=0.95, units=100, homogeneity=&quot;breslow.day&quot;)
-print(res11)
-summary(res11)
-
-
-t2&lt;-as.table(matrix(c(11,48,8,163), nrow = 2, byrow=TRUE))
-res2&lt;-epi.2by2(dat=t2,method=&quot;case.control&quot;,conf.level=0.95, units=100, homogeneity=&quot;breslow.day&quot;)
-print(res2)
-summary(res2)
-
-
-t3&lt;-as.table(matrix(c(7,24,12,187), nrow = 2, byrow=TRUE))
-res3&lt;-epi.2by2(dat=t3,method=&quot;case.control&quot;,conf.level=0.95, units=100, homogeneity=&quot;breslow.day&quot;)
-print(res3)
-summary(res3)
-
-t4&lt;-as.table(matrix(c(19,203,0,8), nrow = 2, byrow=TRUE))
-res4&lt;-epi.2by2(dat=t4,method=&quot;case.control&quot;,conf.level=0.95, units=100, homogeneity=&quot;breslow.day&quot;)
-print(res4)
-summary(res4)</code></pre>
 </div>
 </div>
 
