@@ -450,7 +450,8 @@ create. For now we will select the option <em>R Markdown…</em>.</p>
 <p>It might ask you to install a library if it’s not already installed,
 so just click yes if it does. This will open a window where will ask for
 a title, author, date, and some options for the type of output of the
-document (this can be changed later).</p>
+document. Add your name and select the render format to word (this can
+be changed later).</p>
 <p><img src="img/w3/Ia_RmdCreate.png" style="width:30%" align="center"/></p>
 </div>
 <div id="documents-with-r-markdown-.rmd" class="section level2">
@@ -543,26 +544,12 @@ numbers &lt;- c(10, 40, 25, 3)
 # Examine the result
 numbers</code></pre>
 <pre><code>## [1] 10 40 25  3</code></pre>
-<p>There are multiple ways of storing information inside objects,
-another way is using lists. Lists are more flexible than vectors since
-we can store different type of information. For example, in the next
-chunk of code, we will store information in the way of a numeric value
-and a string of characters:</p>
-<pre class="r"><code>values &lt;- list(3, &quot;five&quot;, 9, &quot;10&quot;)
-
-# print the list we just created
-values</code></pre>
-<pre><code>## [[1]]
-## [1] 3
-## 
-## [[2]]
-## [1] &quot;five&quot;
-## 
-## [[3]]
-## [1] 9
-## 
-## [[4]]
-## [1] &quot;10&quot;</code></pre>
+<!-- There are multiple ways of storing information inside objects, another way is using lists. Lists are more flexible than vectors since we can store different type of information. For example, in the next chunk of code, we will store information in the way of a numeric value and a string of characters: -->
+<!-- ```{r lists} -->
+<!-- values <- list(3, "five", 9, "10") -->
+<!-- # print the list we just created -->
+<!-- values -->
+<!-- ``` -->
 </div>
 <div id="subsetting-objects" class="section level2">
 <h2>Subsetting objects</h2>
@@ -592,7 +579,7 @@ statement about a variable <code>x</code> not equals to variable
 <code>y</code>, we can us the operator <code>!=</code> to define the
 statement. In the following example we compare the 2 values to evaluate
 if they are the same:</p>
-<pre class="r"><code>test &lt;- values[1] == numbers[2]
+<pre class="r"><code>test &lt;- numbers[1] == numbers[2]
 
 test</code></pre>
 <pre><code>## [1] FALSE</code></pre>
@@ -773,7 +760,7 @@ we want to create a subset of all the beef farms we use:</p>
 <pre class="r"><code>beefFarms &lt;- dat %&gt;% 
   filter(Type == &quot;BEEF&quot;)
 
-beefFarms</code></pre>
+head(beefFarms)</code></pre>
 <pre><code>##   ID_farm       Mun     Com Census Prev Incid    Xcoor   Ycoor Type MOV_year
 ## 1       1 GUADALMEZ ALMADEN     14 1.04     1 325389.1 4289645 BEEF     0.00
 ## 2       2 GUADALMEZ ALMADEN    200 0.00     0 327652.2 4291586 BEEF     3.00
@@ -891,24 +878,33 @@ mean for multiple variables, we can use:</p>
 </div>
 </div>
 <div id="iv-a-glimpse-into-data-visualization" class="section level1">
-<h1>IV: a glimpse into data visualization</h1>
+<h1>IV: A glimpse into data visualization</h1>
 <p>To finalize this lab, we will do a little glimpse into data
-visualization and how can we put what we just learn. Next week we will
-go more in detail on this. We will use the library <code>ggplot2</code>
-for making our figure. Make sure it is installed by using:
-<code>install.packages("ggplot2")</code></p>
-<pre class="r"><code>library(ggplot2)
-
-dat %&gt;% 
-  ggplot() +
-  geom_boxplot(aes(x = Prev, y = farmSize))</code></pre>
-<p><img src="lab3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+visualization. For today we will keep it simple and just use the base R
+functions.</p>
+<p>The choice of which type of figure we will use will depend on the
+type of variables we are using.</p>
+<p>For example, to visualize continuous distributions we can use a
+histogram</p>
+<pre class="r"><code>hist(dat$Prev)</code></pre>
+<p><img src="lab3_files/figure-html/hist-1.png" width="672" /></p>
+<p>If we want to plot two continuous variables we can use a scatter
+plot:</p>
+<pre class="r"><code>plot(dat$Census, dat$Prev)</code></pre>
+<p><img src="lab3_files/figure-html/scatterplot-1.png" width="672" /></p>
+<p>If we want to visualize the relationship between a categoricla and a
+continous variable we can use a boxplot:</p>
+<pre class="r"><code>boxplot(dat$Prev~dat$farmSize)</code></pre>
+<p><img src="lab3_files/figure-html/boxplot-1.png" width="672" /></p>
+<p>Next week we will go more in detail into how to make our figures
+pretty ✨</p>
+<hr />
 </div>
 <div id="questions" class="section level1">
 <h1>QUESTIONS</h1>
-<p>For this lab, render the document using the Rmd engine and submit
-your responses as a word document or pdf. <strong>DO NOT SUBMIT IT AS A
-HTML or Rmd.</strong></p>
+<p>Render the document using the Rmd engine and submit your responses as
+a word document or pdf. <strong>DO NOT SUBMIT IT AS A HTML or
+Rmd.</strong></p>
 <ol style="list-style-type: decimal">
 <li><p>How many rows and columns do you have in the dataset
 “dataTB.csv”? Using R, provide a table displaying the information

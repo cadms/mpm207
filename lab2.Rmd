@@ -1,12 +1,6 @@
 ---
 title: "MPM 207 Lab 2"
-output:
-  html_document: 
-    toc: true
-    toc_float: true
-editor_options: 
-  markdown: 
-    wrap: 72
+output: pdf_document
 ---
 
 ```{r echo=F, message=F, warning=F}
