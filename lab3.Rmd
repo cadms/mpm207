@@ -4,12 +4,13 @@ output:
   html_document: 
     toc: true
     toc_float: true
+    number_sections: true
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
-# Objectives
+Objectives
 
 -   Get started with project organization in R studio
 -   Familiarize with the R studio interface and basic R syntaxt
@@ -19,9 +20,9 @@ editor_options:
 
 ------------------------------------------------------------------------
 
-# I: Setting up your environment
+# Setting up your environment
 
-# The Rstudio interface
+## The Rstudio interface
 
 When we start R studio, we can see 4 sections:
 
@@ -42,7 +43,7 @@ When we start R studio, we can see 4 sections:
 
 <img src="img/w3/I_a.png" style="width:100%" align="center"/>
 
-# Organizing your projects
+## Organizing your projects
 
 One of the most useful features of R studio is the project organization,
 if you haven, I strongly encourage you to familiarize with creating and
@@ -170,7 +171,7 @@ html, but you can choose different formats from the dropdown menu.
 
 ------------------------------------------------------------------------
 
-# II: Getting started
+# Getting started
 
 ## Objects in R
 
@@ -284,13 +285,14 @@ You can find the documentation regarding the functions, including the
 arguments (expected inputs) and outputs generated, typing in the R
 console the operator `?` followed by the name of the function.
 
+
 ## Introducing the pipes
 
 The library `dplyr` has several functions that can help to clean, create
 new variables, and modify our data in other ways.
 
 ```{r message = F}
-# if we dont have installed the library we will need to install it using:
+# if we don't have installed the library we will need to install it using:
 # install.packages("dplyr")
 # we load the library:
 library(dplyr)
@@ -332,7 +334,7 @@ pipes and writing the code from left to right.
 
 ------------------------------------------------------------------------
 
-# III: Data manipulation
+# Data manipulation
 
 Now we will import some data into R, here is where the project
 organization becomes handy... To import the data into R we need to know
@@ -366,6 +368,39 @@ is used to subset named elements of an object. For example:
 # Subset the first 5 observations of the col Mun
 dat$Mun[1:5]
 ```
+
+## Types of variables
+
+There are different types of variables in R, so far we have used the numeric and string types. If yo want to know what kind of variable is a given object, you can use the function `class()`. Lets try it.
+
+```{r variables I}
+class(dat$Com)
+```
+
+The most commonly used types of variables include:
+
+  - *numeric* This are continuous numeric variables WITH any decimal values. For example: KG of product imported, probability of an event happening.
+  - *integer* These variables are whole numbers WITHOUT decimal values. For example: Number of animals, number of shipments, etc..
+  - *character* Alphanumeric variables. For example: name of a region, name of a disease, farm ID.
+  - *factor* Alphanumeric variable with specific categories or levels. For example: type of product imported, type of farm, etc...
+  
+### Factors in R
+
+The alphanumeric variables can come in two different forms in R. Character are usually variables without specific levels or categories, while factors are variables with specific levels. we can convert some of our variables to factors. For example:
+
+```{r converting to factor}
+dat$Com <- factor(dat$Com) # Convert to factor
+class(dat$Com) # Verify what type of variable is
+```
+
+## Summary statistics
+
+We can obtain summary statistics for the variables using the function `summary()`. The result will depend on the type of variable use use as argument for the function. For example, numeric variables we will obtain:
+
+```{r summary numeric}
+summary(dat$Census)
+```
+
 
 So far, we have used only base R to manipulate our data. In the next
 section, we will use the library `dplyr`, which several provides
@@ -492,7 +527,7 @@ dat %>%
   )
 ```
 
-# IV: A glimpse into data visualization
+# A glimpse into data visualization
 
 To finalize this lab, we will do a little glimpse into data visualization. For today we will keep it simple and just use the base R functions.  
 
@@ -530,15 +565,16 @@ word document or pdf. **DO NOT SUBMIT IT AS A HTML or Rmd.**
 1.  How many rows and columns do you have in the dataset "dataTB.csv"?
     Using R, provide a table displaying the information contained in the
     10 first rows of the six first columns.
+    
+2. What type of variable is the column Prev? prove the range of values for this variable in the data
 
-2.  Provide a table of the beef farms where the number of movements are
+3. What happens when you use the function `summary()` on a variable of class factor? try using it on the variable *Com* and report your findings. Note: make sure the variable is a factor and not a character.
+
+4.  Provide a table of the beef farms where the number of movements are
     more than 500, only including the columns: *ID_farm*, *Mun*, *Com*,
     *Census* and *ANIM_mov*
 
-3.  Provide a table summarizing the count, median, and maximum values of
-    the TB prevalence by county (Com)
-
-4.  Bonus: Create a boxplot displaying the TB prevalence by county.
+5.  Bonus: Create a boxplot displaying the TB prevalence by county.
 
 ------------------------------------------------------------------------
 
