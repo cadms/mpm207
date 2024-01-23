@@ -1,0 +1,432 @@
+---
+title: "Data handling, validation and manipulation in R. "
+author: "Pablo Gomez"
+format: 
+  revealjs:
+    theme: [dark, custom.scss]
+    footer: "[homepage](https://cadms-ucd.github.io/PROCINORTE_TT/)"
+    pdf-separate-fragments: true
+editor: source
+title-slide-attributes:
+    data-background-image: img/bg_title.png
+---
+
+
+# Some background{background-image="img/bg_title.png"}
+
+## What is the problem?{background-image="img/bg.png"}
+
+::::{.r-stack}
+
+:::{.fragment fragment-index="1" .fade-in-then-out}
+
+:::{.columns}
+
+:::{.column width="50%"}
+
+[Bovine tuberculosis (bTB), caused by Mycobacterium tuberculosis complex, particularly M. bovis and M. caprae, is a zoonotic bacterial disease that affects a wide range of domestic and wild species all over the world.]{.black}
+
+:::
+
+:::{.column width="50%"}
+
+![](img/tb.jpg)
+
+:::
+
+:::
+
+:::
+
+:::{.fragment fragment-index="2" .fade-in-then-out}
+
+:::{.columns}
+
+:::{.column width="50%"}
+
+[Public Health]{style="font-size: 250%; color:#CF2000; text-align:center"}
+
+:::
+
+:::{.column width="50%"}
+
+[Economic Impact]{style="font-size: 250%; color:#CF2000; text-align:center"}
+
+:::
+
+:::
+
+:::
+
+:::{.fragment fragment-index="3" .fade-in-then-out}
+
+[Although bTB eradication has been a major objective for developed countries in the last decades, this goal is still far to be accomplished: 
+]{.black}
+
+![](img/tbSlaughter.gif)
+
+:::
+
+::::
+
+## Data{background-image="img/bg.png"}
+
+[Example: An observational study to evaluate factors associated with TB prev/breakdowns in Ciudad Real (CR), in which we have information at a farm-level (766 farms).]{.black}
+
+![](img/dataDictionary.png)
+
+# How are we doing this?{background-image="img/bg_title.png"}
+
+
+## Getting started with R{background-image="img/bg.png"}
+
+:::{.r-stack}
+
+<!-- Old R -->
+:::{.fragment fragment-index="0" .fade-in-then-out}
+
+:::{.columns}
+
+:::{.column width="70%"}
+
+![](img/oldR.png)
+
+:::
+
+:::{.column width="30%"}
+
+![](https://www.r-project.org/Rlogo.png)
+
+:::
+
+:::
+
+:::
+
+<!-- IDEs -->
+
+:::{.fragment fragment-index="1" .fade-in-then-out}
+
+:::
+
+:::
+
+
+:::.notes
+
+...In ancient times, R was developed as a software for statistical analysis, at the beginning it was not very user friendly and was aimed 100% for programmers and statisticians.
+
+Few years later as programming became more and more common in different fields, different code editors adopted a more user friendly interface to allow easier interaction with the software. 
+
+One of the most popular is Rstudio, which is just the code editor. In recent years 
+
+:::
+
+# Some programming concepts {background-image="img/bg_title.png"}
+
+## [Comments]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+COMMENT AS MUCH AS POSSIBLE!
+
+```{r echo = T, eval = F}
+# This is a comment in R it will be only for the user
+This is not a comment and will cause an error
+```
+
+What is the difference between line 1 and 2?
+
+. . .
+
+YES! the `#` character will make everything after it a comment in that line of code
+
+. . .
+
+```{r echo = T, eval = F}
+10 + 10 # Everything after will be a comment
+7 + 4
+```
+
+::: notes
+Comments are probably the most important feature of programming languages, commenting your code is not only for you (and feature you), it's also to explain other people what you did and make it easier for them to replicate
+:::
+
+## [Operators]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+Operators are characters with a specific function in R for example
+
+```{r echo = T}
+3 + 3 # this is a sum operator
+3 - 2 # this is a subtract operator
+4 * 4 # This is a multiplication
+```
+
+. . .
+
+Later we will see other kind of operators, but... DONT STRESS about learning everything.
+
+## [Objects]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+Objects in R are containers for information, we can create objects with any names we want that start with a letter
+
+```{r echo = T}
+myNumber <- 4
+myResult <- 4 * 5
+```
+
+::: notes
+Does anyone notice what operators are we using in those lines of code?
+:::
+
+## [Storing multiple elements]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+Using the `c()` function
+
+```{r echo = T}
+x <- c(1, 3, 5) # using the c() function
+x
+```
+
+. . .
+
+Using the `list()` function
+
+```{r echo = T}
+y <- list(1, 3, 5) # using the list() function
+y
+```
+
+
+
+## [Boolean logic]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+```{r echo = T}
+1 == 1 # is it equal?
+1 != 1 # is it NOT equal?
+1 %in% c(1, 2, 3) # is the number contained in the sequence?
+```
+
+. . .
+
+Notice that we are using operators to make the comparisons
+
+## [Functions]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+Functions are a special kind of object. Functions are objects that require arguments, the arguments needs to be inside parentheses.
+
+```{r echo = T}
+# create a sequence of numbers
+seq(
+  from = 0, # Starting number
+  to = 80, # Ending number
+  by = 20 # number increment of the sequence
+) 
+```
+
+. . .
+
+Notice that the arguments are named in the function, the arguments in the function `seq()` function are `from`, `to`, `by`.
+
+. . .
+
+We can create our own functions, which we will talk more about in the labs
+
+## Variables in R {background-image="img/bg.png"}
+
+<br/>
+
+::: incremental
+  - [*numeric*]{.green}[, continuous numeric variables WITH any decimal values. For example: KG of product imported, probability of an event happening.]{.black}
+  - [*integer*]{.green} [, Whole numbers WITHOUT decimal values. For example: Number of animals, number of shipments, etc..]{.black}
+  - [*character*]{.green} [, Alphanumeric variables. For example: name of a region, name of a disease, farm ID.]{.black}
+  - [*factor*]{.green} [, Alphanumeric variable with specific categories or levels. For example: type of product imported, type of farm, etc...]{.black}
+  
+:::
+
+
+## [Test time!]{style="color:black;"} {background-color="black" background-image="img/bg_2.png"}
+
+```{r echo=T}
+x <- seq(from = 5, to = 23, length.out = 10) # create a sequence of numbers
+y <- seq(from = 0.1, to = 0.78, length.out = 10) # Create another sequence
+mean(x*y) # Get the mean of the multiplication
+```
+
+. . .
+
+::: columns
+::: {.column with="30%"}
+Objects:\
+- x\
+- y
+:::
+
+::: {.column with="30%"}
+Operators:\
+- `*`\
+- `<-`\
+- `=`
+:::
+:::
+
+. . .
+
+::: columns
+::: {.column with="30%"}
+Functions:\
+- `seq()`\
+- `mean()`
+:::
+
+::: {.column with="30%"}
+Arguments:\
+- `from`\
+- `to`\
+- `lengt.out`
+:::
+:::
+
+## [Introducing the pipes `%>%`]{style="color:black;"} {background-image="img/bg_2.png"}
+
+*Pipes* (`%>%`), can connect several functions to an object.
+
+. . .
+
+For example, if we want to execute a function `F1()` followed by another function `F2()` for the object `x`:
+
+. . .
+
+``` r
+F2(F1(x))
+```
+
+. . .
+
+is equivalent to:
+
+``` r
+x %>% F1() %>% F2()
+```
+
+## [For example]{style="color:black;"} {background-image="img/bg_2.png"}
+
+
+$$\sqrt{\sum_1^n x}$$
+
+Instead of this:
+
+``` r
+sqrt(sum(x))
+```
+
+. . .
+
+We can write it like this:
+
+``` r
+x %>% sum() %>% sqrt()
+```
+
+## [For example]{style="color:black;"} {background-image="img/bg_2.png"}
+
+Instead of this:
+
+``` r
+# Get the number of outgoing and incoming shipments 
+Out <- rename(summarise(group_by(mov, id_orig), Outgoing = n()), id = id_orig)
+```
+
+. . .
+
+We can write this:
+
+``` r
+# Get the number of outgoing and incoming shipments 
+Out <- mov %>% 
+  group_by(id_orig) %>%
+  summarise(Outgoing = n()) %>%
+  rename(id = id_orig)
+```
+
+## [For example]{style="color:black;"} {background-image="img/bg_2.png"}
+
+Instead of this:
+
+``` r
+# Get the number of outgoing and incoming shipments 
+Out <- rename(summarise(group_by(mov, id_orig), Outgoing = n()), id = id_orig)
+```
+
+We can write this:
+
+``` r
+# Get the number of outgoing and incoming shipments 
+Out <- mov %>% # This is the movement data set
+  group_by(id_orig) %>% # Group by origin
+  summarise(Outgoing = n()) %>% # Count the number of observations
+  rename(id = id_orig) # Rename the variable
+```
+
+<br/> And we can break down the code easier!
+
+
+## How can we find help with R? {background-image="img/bg.png"}
+
+::::{.r-stack}
+
+<!-- ? operator -->
+
+:::{.fragment fragment-index="0" .fade-in-then-out}
+
+[Using the `?` operator:]{.black}
+
+![](img/4a_help.png){fig-align="center" width="85%"}
+
+:::
+
+<!-- help doc -->
+
+:::{.fragment fragment-index="1" .fade-in-then-out}
+
+![](img/4a_helpDoc.png){fig-align="center"}
+
+:::
+
+:::{.fragment fragment-index="2" .fade-in-then-out}
+
+![](img/4a_helpDocArg.png){fig-align="center"}
+
+:::
+
+:::{.fragment fragment-index="3" .fade-in-then-out}
+
+![](img/4a_helpDocEx.png){fig-align="center"}
+
+:::
+
+:::{.fragment fragment-index="4" .fade-in-then-out}
+
+[ChatGPT:](https://chat.openai.com/)
+
+![](img/4a_helpChat.png){fig-align="center"}
+
+:::
+
+::::
+
+
+## How can we find help with R? {background-image="img/bg.png"}
+
+
+[ChatGPT:](https://chat.openai.com/)
+
+[! WARNING: CHAT GPT CAN GIVE INCORRECT INFORMATION !]{.red}
+
+-   [If chat GPT does not knows something, sometimes will make up information (i.e. made up references, name of packages, libraries etc...)]{.black}
+-   [Make sure to verify the information provided by Chat GPT]{.black}
+
+## How can we find help with R? {background-image="img/bg.png"}
+
+<br/>
+
+![](img/4a_helpGoogle.png){fig-align="center"}
+
