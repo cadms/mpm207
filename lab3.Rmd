@@ -541,3 +541,7 @@ word document or pdf. **DO NOT SUBMIT IT AS A HTML or Rmd.**
 4.  Bonus: Create a boxplot displaying the TB prevalence by county.
 
 ------------------------------------------------------------------------
+
+# Appendix I: Data dictionary
+
+![](img/w3/dataDictionary.png)
