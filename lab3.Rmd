@@ -92,9 +92,7 @@ related with the current project.
 
 R studio can create several types of documents including: R scripts,
 text files, Markdown, among others. To create a new document you can go
-to the menu located at the upper left corner.
-
-A menu will show with all the different document types you can create.
+to the menu located at the upper left corner. In this lab we will be using an R Markdown document (.Rmd), so let's start creating one. A menu will show with all the different document types you can create.
 For now we will select the option *R Markdown...*.
 
 It might ask you to install a library if it's not already installed, so
