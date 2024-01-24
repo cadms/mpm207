@@ -413,7 +413,7 @@ Pablo Gomez
 <section id="what-is-the-problem" class="slide level2" data-background-image="img/bg.png">
 <h2>What is the problem?</h2>
 <div class="r-stack">
-<div class="fragment fade-in-then-out" data-fragment-index="1">
+<div class="fragment fade-out" data-fragment-index="1">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><span class="black">Bovine tuberculosis (bTB), caused by Mycobacterium tuberculosis complex, particularly M. bovis and M. caprae, is a zoonotic bacterial disease that affects a wide range of domestic and wild species all over the world.</span></p>
@@ -422,7 +422,7 @@ Pablo Gomez
 </div>
 </div>
 </div>
-<div class="fragment fade-in-then-out" data-fragment-index="2">
+<div class="fragment fade-in-then-out" data-fragment-index="1">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><span style="font-size: 250%; color:#CF2000; text-align:center">Public Health</span></p>
@@ -431,12 +431,12 @@ Pablo Gomez
 </div>
 </div>
 </div>
-<div class="fragment fade-in-then-out" data-fragment-index="3">
+<div class="fragment fade-in-then-out" data-fragment-index="2">
 <p><span class="black">Although bTB eradication has been a major objective for developed countries in the last decades, this goal is still far to be accomplished:</span></p>
 <p><img data-src="img/tbSlaughter.gif"></p>
 </div>
-<p><img data-src="img/w3/europeHerds.gif" class="fragment fade-in absolute" style="top: 80px; left: 10px; width: 70%; " data-fragment-index="4"></p>
-<p><img data-src="img/w3/badgers.png" class="fragment fade-in absolute" style="top: 135px; left: 10px; width: 50%; " data-fragment-index="5"> <img data-src="img/w3/otherSp.png" class="fragment fade-in absolute" style="top: 320px; left: 10px; width: 50%; " data-fragment-index="6"></p>
+<p><img data-src="img/w3/europeHerds.gif" class="fragment fade-in absolute" style="top: 80px; left: 10px; width: 70%; " data-fragment-index="3"></p>
+<p><img data-src="img/w3/badgers.png" class="fragment fade-in absolute" style="top: 135px; left: 10px; width: 50%; " data-fragment-index="4"> <img data-src="img/w3/otherSp.png" class="fragment fade-in absolute" style="top: 320px; left: 10px; width: 50%; " data-fragment-index="5"></p>
 </div>
 <aside class="notes">
 <p>TB is especially prevalent in South Central Spain (SCS), where wild ungulates, particularly Eurasian wild boar (Sus scrofa) and red deer (Cervus elaphus), seem to play an important role as TB reservoirs (e.g.&nbsp;Vicente et al., 2006; Gortazar et al., 2011). On the contrary, the TB in Eurasian badgers (Meles meles), which has also been reported in Spain since 2008, seems not to be so relevant for TB transmission to cattle in Spain (Sobrino et al., 2008; Balseiro et al.&nbsp;2011),</p>
@@ -455,8 +455,8 @@ Pablo Gomez
 <section id="study-area" class="slide level2" data-background-image="img/bg.png">
 <h2>Study Area</h2>
 <div class="r-stack">
-<p><img data-src="img/w3/Tbintersection.png" class="fragment fade-in-then-out" style="width:180.0%" data-fragment-index="0"></p>
-<p><img data-src="img/w3/studyArea.png" class="fragment fade-in" style="width:180.0%" data-fragment-index="1"></p>
+<p><img data-src="img/w3/Tbintersection.png" class="fragment fade-out" style="width:180.0%" data-fragment-index="0"></p>
+<p><img data-src="img/w3/studyArea.png" class="fragment fade-in" style="width:180.0%" data-fragment-index="0"></p>
 </div>
 <aside class="notes">
 <p>In Spain, the overall TB-tendency is a low decrease on the herd prevalence, but some regions are still considered highly (&gt;3%) prevalent despite the intensive and costly (34.7 million € during 2011) eradication program in place (MAGRAMA, 2012).</p>
@@ -487,10 +487,8 @@ Pablo Gomez
 <h2>Getting started with R</h2>
 <div class="r-stack">
 <!-- Old R -->
-<div class="fragment fade-in-then-semi-out" data-fragment-index="0">
 <p><img data-src="img/oldR.png" class="absolute" style="top: 100px; left: 100px; width: 30%; "></p>
 <p><img data-src="https://www.r-project.org/Rlogo.png" class="absolute" style="top: 200px; left: 600px; width: 30%; "></p>
-</div>
 <!-- IDEs -->
 <div class="fragment fade-in-then-semi-out" data-fragment-index="1">
 <div class="columns">
@@ -776,60 +774,35 @@ Pablo Gomez
 <h2>How can we find help with R?</h2>
 <div class="r-stack">
 <!-- ? operator -->
-<div class="fragment fade-in-then-out" data-fragment-index="0">
+<div class="fragment fade-out" data-fragment-index="0">
 <p><span class="black">Using the <code>?</code> operator:</span></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/4a_help.png" style="width:85.0%"></p>
-</figure>
-</div>
+<p><img data-src="img/4a_help.png" class="absolute" style="top: 100px; left: 10px; width: 85%; "></p>
 </div>
 <!-- help doc -->
-<div class="fragment fade-in-then-out" data-fragment-index="1">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/4a_helpDoc.png"></p>
-</figure>
+<div class="fragment fade-in-then-out" data-fragment-index="0">
+<p><img data-src="img/4a_helpDoc.png" class="absolute" style="top: 100px; left: 10px; width: 85%; "></p>
 </div>
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<p><img data-src="img/4a_helpDocArg.png" class="absolute" style="top: 100px; left: 10px; width: 85%; "></p>
 </div>
 <div class="fragment fade-in-then-out" data-fragment-index="2">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/4a_helpDocArg.png"></p>
-</figure>
-</div>
+<p><img data-src="img/4a_helpDocEx.png" class="absolute" style="top: 100px; left: 10px; width: 85%; "></p>
 </div>
 <div class="fragment fade-in-then-out" data-fragment-index="3">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/4a_helpDocEx.png"></p>
-</figure>
+<p><a href="https://chat.openai.com/">ChatGPT:</a></p>
+<p><img data-src="img/4a_helpChat.png" class="absolute" style="top: 100px; left: 10px; width: 85%; "></p>
 </div>
 </div>
 <div class="fragment fade-in-then-out" data-fragment-index="4">
-<p><a href="https://chat.openai.com/">ChatGPT:</a></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/4a_helpChat.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="how-can-we-find-help-with-r-1" class="slide level2" data-background-image="img/bg.png">
-<h2>How can we find help with R?</h2>
 <p><a href="https://chat.openai.com/">ChatGPT:</a></p>
 <p><span class="red">! WARNING: CHAT GPT CAN GIVE INCORRECT INFORMATION !</span></p>
 <ul>
 <li><span class="black">If chat GPT does not knows something, sometimes will make up information (i.e.&nbsp;made up references, name of packages, libraries etc…)</span></li>
 <li><span class="black">Make sure to verify the information provided by Chat GPT</span></li>
 </ul>
+</div>
+<p><img data-src="img/4a_helpGoogle.png" class="absolute fragment fade-in" style="top: 100px; left: 10px; width: 85%; " data-fragment-index="5"></p>
 </section>
-<section id="how-can-we-find-help-with-r-2" class="slide level2" data-background-image="img/bg.png">
-<h2>How can we find help with R?</h2>
-<p><br></p>
-
-<img data-src="img/4a_helpGoogle.png" class="r-stretch quarto-figure-center"></section>
 <section id="lab-time" class="slide level2" data-background-image="img/bg.png">
 <h2>Lab Time!</h2>
 <p><br></p>

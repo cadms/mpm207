@@ -22,7 +22,7 @@ To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](http
 
 ::::{.r-stack}
 
-:::{.fragment fragment-index="1" .fade-in-then-out}
+:::{.fragment fragment-index="1" .fade-out}
 
 :::{.columns}
 
@@ -42,7 +42,7 @@ To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](http
 
 :::
 
-:::{.fragment fragment-index="2" .fade-in-then-out}
+:::{.fragment fragment-index="1" .fade-in-then-out}
 
 :::{.columns}
 
@@ -62,7 +62,7 @@ To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](http
 
 :::
 
-:::{.fragment fragment-index="3" .fade-in-then-out}
+:::{.fragment fragment-index="2" .fade-in-then-out}
 
 [Although bTB eradication has been a major objective for developed countries in the last decades, this goal is still far to be accomplished: 
 ]{.black}
@@ -72,10 +72,10 @@ To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](http
 :::
 
 
-![](img/w3/europeHerds.gif){.fragment fragment-index="4" .fade-in width="70%" .absolute top=80 left=10}
+![](img/w3/europeHerds.gif){.fragment fragment-index="3" .fade-in width="70%" .absolute top=80 left=10}
 
-![](img/w3/badgers.png){.fragment fragment-index="5" .fade-in width="50%" .absolute top=135 left=10}
-![](img/w3/otherSp.png){.fragment fragment-index="6" .fade-in width="50%" .absolute top=320 left=10}
+![](img/w3/badgers.png){.fragment fragment-index="4" .fade-in width="50%" .absolute top=135 left=10}
+![](img/w3/otherSp.png){.fragment fragment-index="5" .fade-in width="50%" .absolute top=320 left=10}
 
 :::: 
 
@@ -90,9 +90,9 @@ TB is especially prevalent in South Central Spain (SCS), where wild ungulates, p
 
 :::{.r-stack}
 
-![](img/w3/Tbintersection.png){.fragment fragment-index="0" .fade-in-then-out width="180%"}
+![](img/w3/Tbintersection.png){.fragment fragment-index="0" .fade-out width="180%"}
 
-![](img/w3/studyArea.png){.fragment fragment-index="1" .fade-in width="180%"}
+![](img/w3/studyArea.png){.fragment fragment-index="0" .fade-in width="180%"}
 
 :::
 
@@ -120,7 +120,6 @@ This province is flanked by two important mountainous zones, the Toledo Mountain
 :::::{.r-stack}
 
 <!-- Old R -->
-::::{.fragment fragment-index="0" .fade-in-then-semi-out}
 
 
 ![](img/oldR.png){.absolute top=100 left=100 width="30%"}
@@ -128,7 +127,6 @@ This province is flanked by two important mountainous zones, the Toledo Mountain
 ![](https://www.r-project.org/Rlogo.png){.absolute top=200 left=600 width="30%"}
 
 
-::::
 
 <!-- IDEs -->
 
@@ -425,46 +423,45 @@ Out <- mov %>% # This is the movement data set
 
 <!-- ? operator -->
 
-:::{.fragment fragment-index="0" .fade-in-then-out}
+:::{.fragment fragment-index="0" .fade-out}
 
 [Using the `?` operator:]{.black}
 
-![](img/4a_help.png){fig-align="center" width="85%"}
+![](img/4a_help.png){.absolute width="85%" top=100 left=10}
 
 :::
 
 <!-- help doc -->
 
+:::{.fragment fragment-index="0" .fade-in-then-out}
+
+![](img/4a_helpDoc.png){.absolute width="85%" top=100 left=10}
+
+:::
+
 :::{.fragment fragment-index="1" .fade-in-then-out}
 
-![](img/4a_helpDoc.png){fig-align="center"}
+![](img/4a_helpDocArg.png){.absolute width="85%" top=100 left=10}
 
 :::
 
 :::{.fragment fragment-index="2" .fade-in-then-out}
 
-![](img/4a_helpDocArg.png){fig-align="center"}
+![](img/4a_helpDocEx.png){.absolute width="85%" top=100 left=10}
 
 :::
 
 :::{.fragment fragment-index="3" .fade-in-then-out}
 
-![](img/4a_helpDocEx.png){fig-align="center"}
-
-:::
-
-:::{.fragment fragment-index="4" .fade-in-then-out}
-
 [ChatGPT:](https://chat.openai.com/)
 
-![](img/4a_helpChat.png){fig-align="center"}
+![](img/4a_helpChat.png){.absolute width="85%" top=100 left=10}
 
 :::
 
 ::::
 
-
-## How can we find help with R? {background-image="img/bg.png"}
+:::{.fragment fragment-index="4" .fade-in-then-out}
 
 
 [ChatGPT:](https://chat.openai.com/)
@@ -474,11 +471,10 @@ Out <- mov %>% # This is the movement data set
 -   [If chat GPT does not knows something, sometimes will make up information (i.e. made up references, name of packages, libraries etc...)]{.black}
 -   [Make sure to verify the information provided by Chat GPT]{.black}
 
-## How can we find help with R? {background-image="img/bg.png"}
+:::
 
-<br/>
 
-![](img/4a_helpGoogle.png){fig-align="center"}
+![](img/4a_helpGoogle.png){.absolute width="85%" top=100 left=10 .fragment fragment-index="5" .fade-in}
 
 
 ## Lab Time!{background-image="img/bg.png"}
