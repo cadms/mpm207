@@ -18,6 +18,9 @@ Objectives
 -   Compute summary statistics with data
 -   Introduction to visualization of data
 
+Slides for the introduction of this exercise can be found in this link:
+[https://cadms.github.io/mpm207/s/w3.html](https://cadms.github.io/mpm207/s/w3.html#/title-slide)
+
 ------------------------------------------------------------------------
 
 # Setting up your environment
@@ -285,7 +288,6 @@ You can find the documentation regarding the functions, including the
 arguments (expected inputs) and outputs generated, typing in the R
 console the operator `?` followed by the name of the function.
 
-
 ## Introducing the pipes
 
 The library `dplyr` has several functions that can help to clean, create
@@ -371,7 +373,9 @@ dat$Mun[1:5]
 
 ## Types of variables
 
-There are different types of variables in R, so far we have used the numeric and string types. If yo want to know what kind of variable is a given object, you can use the function `class()`. Lets try it.
+There are different types of variables in R, so far we have used the
+numeric and string types. If yo want to know what kind of variable is a
+given object, you can use the function `class()`. Lets try it.
 
 ```{r variables I}
 class(dat$Com)
@@ -379,14 +383,22 @@ class(dat$Com)
 
 The most commonly used types of variables include:
 
-  - *numeric* This are continuous numeric variables WITH any decimal values. For example: KG of product imported, probability of an event happening.
-  - *integer* These variables are whole numbers WITHOUT decimal values. For example: Number of animals, number of shipments, etc..
-  - *character* Alphanumeric variables. For example: name of a region, name of a disease, farm ID.
-  - *factor* Alphanumeric variable with specific categories or levels. For example: type of product imported, type of farm, etc...
-  
+-   *numeric* This are continuous numeric variables WITH any decimal
+    values. For example: KG of product imported, probability of an event
+    happening.
+-   *integer* These variables are whole numbers WITHOUT decimal values.
+    For example: Number of animals, number of shipments, etc..
+-   *character* Alphanumeric variables. For example: name of a region,
+    name of a disease, farm ID.
+-   *factor* Alphanumeric variable with specific categories or levels.
+    For example: type of product imported, type of farm, etc...
+
 ### Factors in R
 
-The alphanumeric variables can come in two different forms in R. Character are usually variables without specific levels or categories, while factors are variables with specific levels. we can convert some of our variables to factors. For example:
+The alphanumeric variables can come in two different forms in R.
+Character are usually variables without specific levels or categories,
+while factors are variables with specific levels. we can convert some of
+our variables to factors. For example:
 
 ```{r converting to factor}
 dat$Com <- factor(dat$Com) # Convert to factor
@@ -395,12 +407,14 @@ class(dat$Com) # Verify what type of variable is
 
 ## Summary statistics
 
-We can obtain summary statistics for the variables using the function `summary()`. The result will depend on the type of variable use use as argument for the function. For example, numeric variables we will obtain:
+We can obtain summary statistics for the variables using the function
+`summary()`. The result will depend on the type of variable use use as
+argument for the function. For example, numeric variables we will
+obtain:
 
 ```{r summary numeric}
 summary(dat$Census)
 ```
-
 
 So far, we have used only base R to manipulate our data. In the next
 section, we will use the library `dplyr`, which several provides
@@ -529,16 +543,19 @@ dat %>%
 
 # A glimpse into data visualization
 
-To finalize this lab, we will do a little glimpse into data visualization. For today we will keep it simple and just use the base R functions.  
+To finalize this lab, we will do a little glimpse into data
+visualization. For today we will keep it simple and just use the base R
+functions.
 
-The choice of which type of figure we will use will depend on the type of variables we are using. 
+The choice of which type of figure we will use will depend on the type
+of variables we are using.
 
-For example, to visualize continuous distributions we can use a histogram
+For example, to visualize continuous distributions we can use a
+histogram
 
 ```{r hist}
 hist(dat$Prev)
 ```
-
 
 If we want to plot two continuous variables we can use a scatter plot:
 
@@ -546,14 +563,15 @@ If we want to plot two continuous variables we can use a scatter plot:
 plot(dat$Census, dat$Prev)
 ```
 
-If we want to visualize the relationship between a categoricla and a continous variable we can use a boxplot:
+If we want to visualize the relationship between a categoricla and a
+continous variable we can use a boxplot:
 
 ```{r boxplot}
 boxplot(dat$Prev~dat$farmSize)
 ```
 
-Next week we will go more in detail into how to make our figures pretty ✨
-
+Next week we will go more in detail into how to make our figures pretty
+✨
 
 ------------------------------------------------------------------------
 
@@ -565,10 +583,14 @@ word document or pdf. **DO NOT SUBMIT IT AS A HTML or Rmd.**
 1.  How many rows and columns do you have in the dataset "dataTB.csv"?
     Using R, provide a table displaying the information contained in the
     10 first rows of the six first columns.
-    
-2. What type of variable is the column Prev? prove the range of values for this variable in the data
 
-3. What happens when you use the function `summary()` on a variable of class factor? try using it on the variable *Com* and report your findings. Note: make sure the variable is a factor and not a character.
+2.  What type of variable is the column Prev? prove the range of values
+    for this variable in the data
+
+3.  What happens when you use the function `summary()` on a variable of
+    class factor? try using it on the variable *Com* and report your
+    findings. Note: make sure the variable is a factor and not a
+    character.
 
 4.  Provide a table of the beef farms where the number of movements are
     more than 500, only including the columns: *ID_farm*, *Mun*, *Com*,
