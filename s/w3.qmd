@@ -4,12 +4,16 @@ author: "Pablo Gomez"
 format: 
   revealjs:
     theme: [dark, custom.scss]
-    footer: "[homepage](https://cadms-ucd.github.io/PROCINORTE_TT/)"
+    footer: ""
     pdf-separate-fragments: true
 editor: source
 title-slide-attributes:
     data-background-image: img/bg_title.png
 ---
+
+To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html]()
+
+
 
 
 # Some background{background-image="img/bg_title.png"}
@@ -67,7 +71,40 @@ title-slide-attributes:
 
 :::
 
-::::
+
+![](img/w3/europeHerds.gif){.fragment fragment-index="4" .fade-in width="70%" .absolute top=80 left=10}
+
+![](img/w3/badgers.png){.fragment fragment-index="5" .fade-in width="50%" .absolute top=135 left=10}
+![](img/w3/otherSp.png){.fragment fragment-index="6" .fade-in width="50%" .absolute top=320 left=10}
+
+:::: 
+
+
+:::notes
+
+TB is especially prevalent in South Central Spain (SCS), where wild ungulates, particularly Eurasian wild boar (Sus scrofa) and red deer (Cervus elaphus), seem to play an important role as TB reservoirs (e.g. Vicente et al., 2006; Gortazar et al., 2011). On the contrary, the TB in Eurasian badgers (Meles meles), which has also been reported in Spain since 2008, seems not to be so relevant for TB transmission to cattle in Spain (Sobrino et al., 2008; Balseiro et al. 2011), 
+
+:::
+
+## Study Area{background-image="img/bg.png"}
+
+:::{.r-stack}
+
+![](img/w3/Tbintersection.png){.fragment fragment-index="0" .fade-in-then-out width="180%"}
+
+![](img/w3/studyArea.png){.fragment fragment-index="1" .fade-in width="180%"}
+
+:::
+
+
+:::notes
+
+In Spain, the overall TB-tendency is a low decrease on the herd prevalence, but some regions are still considered highly (>3%) prevalent despite the intensive and costly (34.7 million € during 2011) eradication program in place (MAGRAMA, 2012).
+
+This province is flanked by two important mountainous zones, the Toledo Mountains at the North and Sierra Morena at the South, which are connected by the Guadiana river valley, a fragmented Mediterranean agriculture habitat 
+
+
+:::
 
 ## Data{background-image="img/bg.png"}
 
@@ -80,39 +117,48 @@ title-slide-attributes:
 
 ## Getting started with R{background-image="img/bg.png"}
 
-:::{.r-stack}
+:::::{.r-stack}
 
 <!-- Old R -->
-:::{.fragment fragment-index="0" .fade-in-then-out}
+::::{.fragment fragment-index="0" .fade-in-then-semi-out}
 
-:::{.columns}
 
-:::{.column width="70%"}
+![](img/oldR.png){.absolute top=100 left=100 width="30%"}
 
-![](img/oldR.png)
+![](https://www.r-project.org/Rlogo.png){.absolute top=200 left=600 width="30%"}
 
-:::
 
-:::{.column width="30%"}
-
-![](https://www.r-project.org/Rlogo.png)
-
-:::
-
-:::
-
-:::
+::::
 
 <!-- IDEs -->
 
-:::{.fragment fragment-index="1" .fade-in-then-out}
+::::{.fragment fragment-index="1" .fade-in-then-semi-out}
+
+
+:::{.columns}
+
+:::{.column width="50%"}
+
+![](img/w3/vscode.png){.absolute top=200 left=0 width="50%"}
+
+:::
+
+:::{.column width="50%"}
+
+![](img/w3/rstudio.png)
 
 :::
 
 :::
 
+::::
 
-:::.notes
+![](img/w3/posit.png){.fragment fragment-index="2" .fade-in .absolute top=100 left=0}
+
+:::::
+
+
+:::{.notes}
 
 ...In ancient times, R was developed as a software for statistical analysis, at the beginning it was not very user friendly and was aimed 100% for programmers and statisticians.
 
@@ -121,6 +167,10 @@ Few years later as programming became more and more common in different fields, 
 One of the most popular is Rstudio, which is just the code editor. In recent years 
 
 :::
+
+## R Studio {background-image="img/bg.png"}
+
+![](img/w3/I_a.png)
 
 # Some programming concepts {background-image="img/bg_title.png"}
 
@@ -430,3 +480,9 @@ Out <- mov %>% # This is the movement data set
 
 ![](img/4a_helpGoogle.png){fig-align="center"}
 
+
+## Lab Time!{background-image="img/bg.png"}
+
+<br>
+
+[https://cadms.github.io/mpm207/lab3.html](https://cadms.github.io/mpm207/lab3.html){preview-link="true" style="font-size:160%"}
