@@ -11,7 +11,7 @@ title-slide-attributes:
     data-background-image: img/bg_title.png
 ---
 
-To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html]()
+To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](https://cadms.github.io/mpm207/s/w3.html)
 
 
 
