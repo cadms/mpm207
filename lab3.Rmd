@@ -509,36 +509,6 @@ dat %>%
   count(farmSize, Type)
 ```
 
-### Other summary statistics
-
-We can also compute other summary statistics such as median, mean,
-standard deviation, or any other function in R. For example:
-
-```{r}
-dat %>% 
-  group_by(farmSize) %>% # We group by farm size
-  # we use the function summarise to get the summary statistics
-  summarise(
-    count = n(), # we use the function n() to get the counts
-    medianPrev = median(Prev), # mean() to get the mean 
-    maxPrev = max(Prev) # sd() for the standard deviation
-  )
-```
-
-The functions `mutate` and `summarise` in `dplyr` have some variants
-that allow to do multiple operation for multiple variables, which makes
-the manipulation more flexible. For example if we want to calculate the
-standard deviation and mean for multiple variables, we can use:
-
-```{r}
-dat %>% 
-  group_by(farmSize) %>% 
-  summarise_at( # Notice that we use the function `summarise_at()` this time
-    vars(Prev, ANIM_mov),  # first we specify the names of the columns
-    list(median = ~median(.), max_value = ~max(.), count = ~n()) # Then we specify the functions we want to use
-  )
-```
-
 # A glimpse into data visualization
 
 To finalize this lab, we will do a little glimpse into data
@@ -582,8 +552,7 @@ word document or pdf. **DO NOT SUBMIT IT AS A HTML or Rmd.**
     Using R, provide a table displaying the information contained in the
     10 first rows of the six first columns.
 
-2.  What type of variable is the column Prev? prove the range of values
-    for this variable in the data
+2.  What type of variable is the column Prev? provide the range of values for this variable in the data
 
 3.  What happens when you use the function `summary()` on a variable of
     class factor? try using it on the variable *Com* and report your
