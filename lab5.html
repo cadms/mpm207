@@ -13,13 +13,13 @@
 
 <title>Lab 5 - Selecting the right analytical method: Fundamentals and interpretation of results.</title>
 
-<script src="lab5_files/header-attrs-2.25/header-attrs.js"></script>
-<script src="lab5_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="lab5_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="lab5_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="lab5_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="lab5_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="lab5_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="lab5_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="lab5_files/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="lab5_files/navigation-1.1/tabsets.js"></script>
-<link href="lab5_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="lab5_files/highlightjs-9.12.0/highlight.js"></script>
-<link href="lab5_files/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="lab5_files/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -506,29 +506,6 @@ ggplot(data = EJ) +
 <pre class="r"><code>ggplot(data = EJ) +
   geom_histogram(aes(Census))</code></pre>
 <p><img src="lab5_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
-<div id="making-plots-for-multiple-variables" class="section level3"
-number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Making plots for
-multiple variables</h3>
-<p>If you remember, last week, we used ggplot and facets for this. For
-this data, we need to first format the data correctly:</p>
-<pre class="r"><code>EJ %&gt;% 
-  # select_if(is.numeric) %&gt;% 
-  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
-  tidyr::gather() %&gt;% 
-  ggplot() +
-  geom_histogram(aes(value)) +
-  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
-<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-1.png" width="672" /></p>
-<pre class="r"><code>EJ %&gt;% 
-  # select_if(is.numeric) %&gt;%
-  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
-  tidyr::gather() %&gt;% 
-  ggplot(aes(sample = value)) +
-  stat_qq(size = 0.1, alpha = 0.5) +
-  stat_qq_line() +
-  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
-<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-2.png" width="672" /></p>
 <pre class="r"><code>## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
   stat_qq() +
@@ -563,6 +540,29 @@ want to try it, make sure you install the library.</p>
 # install.packages(&quot;nortest&quot;)
 # library(nortest)
 # ad.test(EJ$Prev) </code></pre>
+<div id="making-plots-for-multiple-variables" class="section level3"
+number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Making plots for
+multiple variables</h3>
+<p>If you remember, last week, we used ggplot and facets for this. For
+this data, we need to first format the data correctly:</p>
+<pre class="r"><code>EJ %&gt;% 
+  # select_if(is.numeric) %&gt;% 
+  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
+  tidyr::gather() %&gt;% 
+  ggplot() +
+  geom_histogram(aes(value)) +
+  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-1.png" width="672" /></p>
+<pre class="r"><code>EJ %&gt;% 
+  # select_if(is.numeric) %&gt;%
+  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
+  tidyr::gather() %&gt;% 
+  ggplot(aes(sample = value)) +
+  stat_qq(size = 0.1, alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-2.png" width="672" /></p>
 </div>
 </div>
 <div id="bivariate-analysis" class="section level2" number="3.3">

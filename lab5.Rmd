@@ -8,7 +8,7 @@ output:
 editor_options: 
   markdown: 
     wrap: 72
-knit: pagedown::chrome_print
+# knit: pagedown::chrome_print
 ---
 
 # Objectives
@@ -103,30 +103,6 @@ ggplot(data = EJ) +
 ```
 
 
-### Making plots for multiple variables
-
-If you remember, last week, we used ggplot and facets for this. For this data, we need to first format the data correctly:
-
-```{r making plots for multiple variables}
-EJ %>% 
-  # select_if(is.numeric) %>% 
-  select(Census, Prev, ANIM_mov, goat, sheep) %>%
-  tidyr::gather() %>% 
-  ggplot() +
-  geom_histogram(aes(value)) +
-  facet_wrap(~key, scales = "free")
-
-EJ %>% 
-  # select_if(is.numeric) %>%
-  select(Census, Prev, ANIM_mov, goat, sheep) %>%
-  tidyr::gather() %>% 
-  ggplot(aes(sample = value)) +
-  stat_qq(size = 0.1, alpha = 0.5) +
-  stat_qq_line() +
-  facet_wrap(~key, scales = "free")
-```
-
-
 ```{r}
 ## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
@@ -165,6 +141,30 @@ it, make sure you install the library.
 # install.packages("nortest")
 # library(nortest)
 # ad.test(EJ$Prev) 
+```
+
+
+### Making plots for multiple variables
+
+If you remember, last week, we used ggplot and facets for this. For this data, we need to first format the data correctly:
+
+```{r making plots for multiple variables}
+EJ %>% 
+  # select_if(is.numeric) %>% 
+  select(Census, Prev, ANIM_mov, goat, sheep) %>%
+  tidyr::gather() %>% 
+  ggplot() +
+  geom_histogram(aes(value)) +
+  facet_wrap(~key, scales = "free")
+
+EJ %>% 
+  # select_if(is.numeric) %>%
+  select(Census, Prev, ANIM_mov, goat, sheep) %>%
+  tidyr::gather() %>% 
+  ggplot(aes(sample = value)) +
+  stat_qq(size = 0.1, alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~key, scales = "free")
 ```
 
 ## Bivariate analysis
