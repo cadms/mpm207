@@ -431,15 +431,6 @@ EJ &lt;- EJ %&gt;%
     catCensus = cut(Census,breaks=quantile(EJ$Census), include.lowest=TRUE), #Create a categorical variable using quantiles
     census_b = ifelse(Census &gt; median(Census),1,0) # Create a binomial variable (YES/NO~1/0) using the median as cut-off point
   )</code></pre>
-<p>Now we will examine the normality of some of the variables</p>
-<pre class="r"><code>par(mfrow=c(2,3),mar=c(4,4,4,4))
-qqnorm(EJ$Prev)
-qqnorm(EJ$Census)
-qqnorm(EJ$MOV_year)
-qqnorm(EJ$MOV_cen)
-qqnorm(EJ$ANIM_mov)
-qqnorm(EJ$MEANfenced)</code></pre>
-<p><img src="lab5_files/figure-html/examine%20normality%20of%20the%20data-1.png" width="672" /></p>
 <p>We can examine some of the variables using different functions:</p>
 <pre class="r"><code>## some useful functions to know more about the type of variables of your database#
 str(EJ)</code></pre>
@@ -513,7 +504,7 @@ ggplot(data = EJ) +
 <pre class="r"><code>ggplot(data = EJ) +
   geom_histogram(aes(Census))</code></pre>
 <p><img src="lab5_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
-<pre class="r"><code>## normal quantile-quantile plots ##
+<pre class="r"><code>## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
   stat_qq() +
   stat_qq_line()</code></pre>
@@ -539,6 +530,10 @@ shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample c
 ## 
 ## data:  EJ$Prev
 ## W = 0.58224, p-value &lt; 2.2e-16</code></pre>
+<p>Additionally, other options for estimating the nirmality of the data
+can. be obtained with the Anderson-Darling test for normality. This
+requires an additional package called <code>nortest</code> so if you
+want to try it, make sure you install the library.</p>
 <pre class="r"><code>#similar test than the above will be the Anderson-Darling test for normality:#
 # install.packages(&quot;nortest&quot;)
 # library(nortest)
@@ -791,8 +786,8 @@ the creation of the table].</li>
 <li>Are all the quantitative variables of your database normally
 distributed? Use graphs to support your answer. Provide two figures: one
 for the histograms and other for the quantile-quantile plots to support
-your answer [TIP: use <code>par()</code> <code>hist()</code> and
-<code>qqnorm()</code> functions].</li>
+your answer [TIP: use <code>geom_hist()</code> and
+<code>stat_qq()</code> functions].</li>
 <li>Do you believe that the t-test is the best option to respond to this
 question? Justify your answer. Try to reproduce the analysis conducted
 by the regional veterinary authorities (i.e. t-test) and provide the
@@ -808,8 +803,8 @@ result with the one obtained in question 3.</li>
 differences in TB prevalence in the four categories of farms using the
 EJ$catCensus variable. Which test would you use for this? Provide the
 R-code, the results and the interpretation of your findings. Also
-provide a boxplot to support your results [Tip: use the boxplot ()
-function].</li>
+provide a boxplot to support your results [Tip: use the
+<code>geom_boxplot()</code> function].</li>
 <li>Select an appropriate test to evaluate the statistical association
 between TB prevalence and a) the number of incoming shipments of cattle
 per year, b) presence or absence of sheep on farm and, c) mean number of

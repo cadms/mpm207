@@ -64,17 +64,6 @@ EJ <- EJ %>%
   )
 ```
 
-Now we will examine the normality of some of the variables
-
-```{r examine normality of the data}
-par(mfrow=c(2,3),mar=c(4,4,4,4))
-qqnorm(EJ$Prev)
-qqnorm(EJ$Census)
-qqnorm(EJ$MOV_year)
-qqnorm(EJ$MOV_cen)
-qqnorm(EJ$ANIM_mov)
-qqnorm(EJ$MEANfenced)
-```
 
 We can examine some of the variables using different functions:
 
@@ -98,7 +87,7 @@ ggplot(data = EJ) +
 ```
 
 ```{r}
-## normal quantile-quantile plots ##
+## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
   stat_qq() +
   stat_qq_line()
@@ -126,6 +115,7 @@ ggplot(data = EJ) +
 shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample comes from a normal distribution(p-value <0.05, sample deviates from normality)
 ```
 
+Additionally, other options for estimating the nirmality of the data can. be obtained with the Anderson-Darling test for normality. This requires an additional package called `nortest` so if you want to try it, make sure you install the library.
 
 ```{r}
 #similar test than the above will be the Anderson-Darling test for normality:#
@@ -246,8 +236,8 @@ summary(m1)
 # Questions
 
   1. What type of variables do you have in the “dataTB” database? Provide a table in which you include the name of the variable in the first column and the type of variable in the second column (i.e. use for the type of variable the term “categorical”, “ordinal” or “quantitative”). [TIP: no need to do the table in R, just use `str()`, `typeof()` and `summary()` functions to support the creation of the table].
-  2. Are all the quantitative variables of your database normally distributed? Use graphs to support your answer. Provide two figures: one for the histograms and other for the quantile-quantile plots to support your answer [TIP: use `par()` `hist()` and `qqnorm()` functions].
+  2. Are all the quantitative variables of your database normally distributed? Use graphs to support your answer. Provide two figures: one for the histograms and other for the quantile-quantile plots to support your answer [TIP: use  `geom_hist()` and `stat_qq()` functions].
   3. Do you believe that the t-test is the best option to respond to this question? Justify your answer. Try to reproduce the analysis conducted by the regional veterinary authorities (i.e. t-test) and provide the code and the results.
   4. Which (more appropriate) statistical test would you use to support (or reject) with statistical evidence the hypothesis of the regional veterinary authorities? Provide the R-code to run the statistical analysis, the results and an interpretation of your findings. [Note: consider the information obtained in question 2 and the table provided above to decide the appropriate type of test to use]. Compare this result with the one obtained in question 3.
-  5. Statistically evaluate whether or not there are significant differences in TB prevalence in the four categories of farms using the EJ$catCensus variable. Which test would you use for this? Provide the R-code, the results and the interpretation of your findings. Also provide a boxplot to support your results [Tip: use the boxplot () function].
+  5. Statistically evaluate whether or not there are significant differences in TB prevalence in the four categories of farms using the EJ$catCensus variable. Which test would you use for this? Provide the R-code, the results and the interpretation of your findings. Also provide a boxplot to support your results [Tip: use the `geom_boxplot()` function].
   6. Select an appropriate test to evaluate the statistical association between TB prevalence and a) the number of incoming shipments of cattle per year, b) presence or absence of sheep on farm and, c) mean number of fenced hunting states in a 3km radius around the farm. Provide the code, the results and an interpretation of your findings. Now, do the same but with TB incidence (using the same 3 predictors)
