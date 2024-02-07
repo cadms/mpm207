@@ -13,13 +13,13 @@
 
 <title>Lab 5 - Selecting the right analytical method: Fundamentals and interpretation of results.</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="lab5_files/header-attrs-2.25/header-attrs.js"></script>
+<script src="lab5_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<link href="lab5_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="lab5_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="lab5_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="lab5_files/bootstrap-3.3.5/shim/respond.min.js"></script>
 <style>h1 {font-size: 34px;}
        h1.title {font-size: 38px;}
        h2 {font-size: 30px;}
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<script src="lab5_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="lab5_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="lab5_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="lab5_files/navigation-1.1/tabsets.js"></script>
+<link href="lab5_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="lab5_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="lab5_files/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="lab5_files/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -506,6 +506,29 @@ ggplot(data = EJ) +
 <pre class="r"><code>ggplot(data = EJ) +
   geom_histogram(aes(Census))</code></pre>
 <p><img src="lab5_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<div id="making-plots-for-multiple-variables" class="section level3"
+number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Making plots for
+multiple variables</h3>
+<p>If you remember, last week, we used ggplot and facets for this. For
+this data, we need to first format the data correctly:</p>
+<pre class="r"><code>EJ %&gt;% 
+  # select_if(is.numeric) %&gt;% 
+  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
+  tidyr::gather() %&gt;% 
+  ggplot() +
+  geom_histogram(aes(value)) +
+  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-1.png" width="672" /></p>
+<pre class="r"><code>EJ %&gt;% 
+  # select_if(is.numeric) %&gt;%
+  select(Census, Prev, ANIM_mov, goat, sheep) %&gt;%
+  tidyr::gather() %&gt;% 
+  ggplot(aes(sample = value)) +
+  stat_qq(size = 0.1, alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~key, scales = &quot;free&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/making%20plots%20for%20multiple%20variables-2.png" width="672" /></p>
 <pre class="r"><code>## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
   stat_qq() +
@@ -540,6 +563,7 @@ want to try it, make sure you install the library.</p>
 # install.packages(&quot;nortest&quot;)
 # library(nortest)
 # ad.test(EJ$Prev) </code></pre>
+</div>
 </div>
 <div id="bivariate-analysis" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Bivariate
@@ -779,41 +803,42 @@ summary(m1)</code></pre>
 <div id="questions" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Questions</h1>
 <ol style="list-style-type: decimal">
-<li>What type of variables do you have in the “dataTB” database? Provide
-a table in which you include the name of the variable in the first
-column and the type of variable in the second column (i.e. use for the
-type of variable the term “categorical”, “ordinal” or “quantitative”).
-[TIP: no need to do the table in R, just use <code>str()</code>,
-<code>typeof()</code> and <code>summary()</code> functions to support
-the creation of the table].</li>
-<li>Are all the quantitative variables of your database normally
+<li><p>What type of variables do you have in the “dataTB” database?
+Provide a table in which you include the name of the variable in the
+first column and the type of variable in the second column (i.e. use for
+the type of variable the term “categorical”, “ordinal” or
+“quantitative”). [TIP: no need to do the table in R, just use
+<code>str()</code>, <code>typeof()</code> and <code>summary()</code>
+functions to support the creation of the table].</p></li>
+<li><p>Are all the quantitative variables of your database normally
 distributed? Use graphs to support your answer. Provide two figures: one
 for the histograms and other for the quantile-quantile plots to support
 your answer [TIP: use <code>geom_hist()</code> and
-<code>stat_qq()</code> functions].</li>
-<li>Do you believe that the t-test is the best option to respond to this
-question? Justify your answer. Try to reproduce the analysis conducted
-by the regional veterinary authorities (i.e. t-test) and provide the
-code and the results.</li>
-<li>Which (more appropriate) statistical test would you use to support
-(or reject) with statistical evidence the hypothesis of the regional
-veterinary authorities? Provide the R-code to run the statistical
-analysis, the results and an interpretation of your findings. [Note:
-consider the information obtained in question 2 and the table provided
-above to decide the appropriate type of test to use]. Compare this
-result with the one obtained in question 3.</li>
-<li>Statistically evaluate whether or not there are significant
+<code>stat_qq()</code> functions].</p></li>
+<li><p>Do you believe that the t-test is the best option to respond to
+this question? Justify your answer. Try to reproduce the analysis
+conducted by the regional veterinary authorities (i.e. t-test) and
+provide the code and the results.</p></li>
+<li><p>Which (more appropriate) statistical test would you use to
+support (or reject) with statistical evidence the hypothesis of the
+regional veterinary authorities? Provide the R-code to run the
+statistical analysis, the results and an interpretation of your
+findings. [Note: consider the information obtained in question 2 and the
+table provided above to decide the appropriate type of test to use].
+Compare this result with the one obtained in question 3.</p></li>
+<li><p>Statistically evaluate whether or not there are significant
 differences in TB prevalence in the four categories of farms using the
 EJ$catCensus variable. Which test would you use for this? Provide the
 R-code, the results and the interpretation of your findings. Also
 provide a boxplot to support your results [Tip: use the
-<code>geom_boxplot()</code> function].</li>
-<li>Select an appropriate test to evaluate the statistical association
-between TB prevalence and a) the number of incoming shipments of cattle
-per year, b) presence or absence of sheep on farm and, c) mean number of
-fenced hunting states in a 3km radius around the farm. Provide the code,
-the results and an interpretation of your findings. Now, do the same but
-with TB incidence (using the same 3 predictors)</li>
+<code>geom_boxplot()</code> function].</p></li>
+<li><p>Select an appropriate test to evaluate the statistical
+association between TB prevalence and a) the number of incoming
+shipments of cattle per year, b) presence or absence of sheep on farm
+and, c) mean number of fenced hunting states in a 3km radius around the
+farm. Provide the code, the results and an interpretation of your
+findings. Now, do the same but with TB incidence (using the same 3
+predictors)</p></li>
 </ol>
 </div>
 

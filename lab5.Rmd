@@ -8,47 +8,62 @@ output:
 editor_options: 
   markdown: 
     wrap: 72
+knit: pagedown::chrome_print
 ---
 
 # Objectives
-  
-  - Select the appropriate statistical test and graphical methods to compare groups and analyze different types of epidemiological data using R language.
-  - Be able to properly interpret the results of those statistical tests.
-  - Get further insight into the use and implementation of R environment for analysis of epidemiological data.
-  
-# Instructions
-  
-  - Follow the guidelines and answer the questions. Remember to send the answers in a pdf document labeled as “YOUR_LAST_NAME_Lab 5” using CANVAS before 12:00pm, February 13th.
-  - Do not hesitate to ask the instructor if you have any questions.
 
-We will continue using the dataset provided dataTB.txt contains the following information regarding cattle farms in Ciudad Real during 2005:
+-   Select the appropriate statistical test and graphical methods to
+    compare groups and analyze different types of epidemiological data
+    using R language.
+-   Be able to properly interpret the results of those statistical
+    tests.
+-   Get further insight into the use and implementation of R environment
+    for analysis of epidemiological data.
+
+# Instructions
+
+-   Follow the guidelines and answer the questions. Remember to send the
+    answers in a pdf document labeled as “YOUR_LAST_NAME_Lab 5” using
+    CANVAS before 12:00pm, February 13th.
+-   Do not hesitate to ask the instructor if you have any questions.
+
+We will continue using the dataset provided dataTB.txt contains the
+following information regarding cattle farms in Ciudad Real during 2005:
 
 ![](img/w3/dataDictionary.png)
 
-The table below will provide you general guidelines to choose the appropriate statistical test for the different exercises of this lab. Have a look at it and continue reading below.
+The table below will provide you general guidelines to choose the
+appropriate statistical test for the different exercises of this lab.
+Have a look at it and continue reading below.
 
 ![](img/w5/statTests.png)
 
+We are going to start exploring the potential association between
+hypothesized risk factors and TB prevalence and/or incidence, using
+bivariate analysis but, first, answer QUESTION 1 and 2.\
+The regional veterinary authorities of Ciudad Real (i.e. our study
+region) believe that the TB prevalence in Beef farms is significantly
+higher than the prevalence in Dairy farms, however, they failed to find
+any statistical association (using a t-test). Answer QUESTION 3 and 4.\
+Continue exploring the other variables in the dataset and their
+potential associations with TB prevalence or TB incidence on the farm.
+Answer QUESTION 5 and 6.
 
-We are going to start exploring the potential association between hypothesized risk factors and TB prevalence
-and/or incidence, using bivariate analysis but, first, answer QUESTION 1 and 2.  
-The regional veterinary authorities of Ciudad Real (i.e. our study region) believe that the TB prevalence in Beef
-farms is significantly higher than the prevalence in Dairy farms, however, they failed to find any statistical
-association (using a t-test). Answer QUESTION 3 and 4.  
-Continue exploring the other variables in the dataset and their potential associations with TB prevalence or TB
-incidence on the farm. Answer QUESTION 5 and 6.
-
---------
+------------------------------------------------------------------------
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Lab portion
 
 ## Loading the data
 
-First we will load the libraries we will use and the data that we previously used on Lab 3. Remember changing the path to the location of the data in your computer:
+First we will load the libraries we will use and the data that we
+previously used on Lab 3. Remember changing the path to the location of
+the data in your computer:
 
 ```{r load the data}
 # Load libraries --------
@@ -65,7 +80,6 @@ EJ <- EJ %>%
     census_b = ifelse(Census > median(Census),1,0) # Create a binomial variable (YES/NO~1/0) using the median as cut-off point
   )
 ```
-
 
 We can examine some of the variables using different functions:
 
@@ -88,6 +102,31 @@ ggplot(data = EJ) +
   geom_histogram(aes(Census))
 ```
 
+
+### Making plots for multiple variables
+
+If you remember, last week, we used ggplot and facets for this. For this data, we need to first format the data correctly:
+
+```{r making plots for multiple variables}
+EJ %>% 
+  # select_if(is.numeric) %>% 
+  select(Census, Prev, ANIM_mov, goat, sheep) %>%
+  tidyr::gather() %>% 
+  ggplot() +
+  geom_histogram(aes(value)) +
+  facet_wrap(~key, scales = "free")
+
+EJ %>% 
+  # select_if(is.numeric) %>%
+  select(Census, Prev, ANIM_mov, goat, sheep) %>%
+  tidyr::gather() %>% 
+  ggplot(aes(sample = value)) +
+  stat_qq(size = 0.1, alpha = 0.5) +
+  stat_qq_line() +
+  facet_wrap(~key, scales = "free")
+```
+
+
 ```{r}
 ## normal quantile-quantile plots
 ggplot(data = EJ, aes(sample = Prev)) +
@@ -98,7 +137,6 @@ ggplot(data = EJ, aes(sample = Census)) +
   stat_qq() +
   stat_qq_line()
 ```
-
 
 ```{r}
 ## boxplots ###
@@ -117,7 +155,10 @@ ggplot(data = EJ) +
 shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample comes from a normal distribution(p-value <0.05, sample deviates from normality)
 ```
 
-Additionally, other options for estimating the nirmality of the data can. be obtained with the Anderson-Darling test for normality. This requires an additional package called `nortest` so if you want to try it, make sure you install the library.
+Additionally, other options for estimating the nirmality of the data
+can. be obtained with the Anderson-Darling test for normality. This
+requires an additional package called `nortest` so if you want to try
+it, make sure you install the library.
 
 ```{r}
 #similar test than the above will be the Anderson-Darling test for normality:#
@@ -217,7 +258,6 @@ plot(av)
 cor.test(EJ$Prev, EJ$Census, method=c("pearson"))
 ```
 
-
 #### Spearman
 
 ```{r}
@@ -225,7 +265,6 @@ cor.test(EJ$Prev, EJ$Census, method=c("pearson"))
 cor.test(EJ$Prev, EJ$Census, method=c("spearman"))
 cor.test(EJ$MOV_year, EJ$Census, method=c("spearman"))
 ```
-
 
 ### Regression
 
@@ -235,13 +274,48 @@ m1<-glm(EJ$Incid~EJ$Census, family=binomial(link="logit"))
 summary(m1)
 ```
 
--------
+------------------------------------------------------------------------
 
 # Questions
 
-  1. What type of variables do you have in the “dataTB” database? Provide a table in which you include the name of the variable in the first column and the type of variable in the second column (i.e. use for the type of variable the term “categorical”, “ordinal” or “quantitative”). [TIP: no need to do the table in R, just use `str()`, `typeof()` and `summary()` functions to support the creation of the table].
-  2. Are all the quantitative variables of your database normally distributed? Use graphs to support your answer. Provide two figures: one for the histograms and other for the quantile-quantile plots to support your answer [TIP: use  `geom_hist()` and `stat_qq()` functions].
-  3. Do you believe that the t-test is the best option to respond to this question? Justify your answer. Try to reproduce the analysis conducted by the regional veterinary authorities (i.e. t-test) and provide the code and the results.
-  4. Which (more appropriate) statistical test would you use to support (or reject) with statistical evidence the hypothesis of the regional veterinary authorities? Provide the R-code to run the statistical analysis, the results and an interpretation of your findings. [Note: consider the information obtained in question 2 and the table provided above to decide the appropriate type of test to use]. Compare this result with the one obtained in question 3.
-  5. Statistically evaluate whether or not there are significant differences in TB prevalence in the four categories of farms using the EJ$catCensus variable. Which test would you use for this? Provide the R-code, the results and the interpretation of your findings. Also provide a boxplot to support your results [Tip: use the `geom_boxplot()` function].
-  6. Select an appropriate test to evaluate the statistical association between TB prevalence and a) the number of incoming shipments of cattle per year, b) presence or absence of sheep on farm and, c) mean number of fenced hunting states in a 3km radius around the farm. Provide the code, the results and an interpretation of your findings. Now, do the same but with TB incidence (using the same 3 predictors)
+1.  What type of variables do you have in the “dataTB” database? Provide
+    a table in which you include the name of the variable in the first
+    column and the type of variable in the second column (i.e. use for
+    the type of variable the term “categorical”, “ordinal” or
+    “quantitative”). [TIP: no need to do the table in R, just use
+    `str()`, `typeof()` and `summary()` functions to support the
+    creation of the table].
+
+2.  Are all the quantitative variables of your database normally
+    distributed? Use graphs to support your answer. Provide two figures:
+    one for the histograms and other for the quantile-quantile plots to
+    support your answer [TIP: use `geom_hist()` and `stat_qq()`
+    functions].
+
+3.  Do you believe that the t-test is the best option to respond to this
+    question? Justify your answer. Try to reproduce the analysis
+    conducted by the regional veterinary authorities (i.e. t-test) and
+    provide the code and the results.
+
+4.  Which (more appropriate) statistical test would you use to support
+    (or reject) with statistical evidence the hypothesis of the regional
+    veterinary authorities? Provide the R-code to run the statistical
+    analysis, the results and an interpretation of your findings. [Note:
+    consider the information obtained in question 2 and the table
+    provided above to decide the appropriate type of test to use].
+    Compare this result with the one obtained in question 3.
+
+5.  Statistically evaluate whether or not there are significant
+    differences in TB prevalence in the four categories of farms using
+    the EJ\$catCensus variable. Which test would you use for this?
+    Provide the R-code, the results and the interpretation of your
+    findings. Also provide a boxplot to support your results [Tip: use
+    the `geom_boxplot()` function].
+
+6.  Select an appropriate test to evaluate the statistical association
+    between TB prevalence and a) the number of incoming shipments of
+    cattle per year, b) presence or absence of sheep on farm and, c)
+    mean number of fenced hunting states in a 3km radius around the
+    farm. Provide the code, the results and an interpretation of your
+    findings. Now, do the same but with TB incidence (using the same 3
+    predictors)
