@@ -88,24 +88,32 @@ summary(EJ)
 ```{r}
 ## Best choice is to graphically evaluate your data ##
 ## histograms ##
-par(mfrow=c(1,2)) 
-hist(EJ$Prev)
-hist(EJ$Census)
+ggplot(data = EJ) +
+  geom_histogram(aes(Prev))
+
+ggplot(data = EJ) +
+  geom_histogram(aes(Census))
 ```
 
 ```{r}
 ## normal quantile-quantile plots ##
-qqnorm(EJ$Prev)
-qqnorm(EJ$Census)
-cf<-lm(EJ$Census~1)
-abline(a=-3, b=coef(cf),col="blue")
+ggplot(data = EJ, aes(sample = Prev)) +
+  stat_qq() +
+  stat_qq_line()
+
+ggplot(data = EJ, aes(sample = Census)) +
+  stat_qq() +
+  stat_qq_line()
 ```
 
 
 ```{r}
 ## boxplots ###
-boxplot(EJ$Prev, outline=FALSE)
-boxplot(EJ$Census~EJ$Type, outline=FALSE, pty=19, las=1, cex.lab=1.3, cex.axis=0.9, ylab="Cattle census", xlab="type of farm")
+ggplot(data = EJ) +
+  geom_boxplot(aes(Prev))
+
+ggplot(data = EJ) +
+  geom_boxplot(aes(Census, Type))
 ```
 
 ```{r using shapiro test}
@@ -232,3 +240,12 @@ cor.test(EJ$MOV_year, EJ$Census, method=c("spearman"))
 m1<-glm(EJ$Incid~EJ$Census, family=binomial(link="logit"))
 summary(m1)
 ```
+
+# Questions
+
+  1. What type of variables do you have in the “dataTB” database? Provide a table in which you include the name of the variable in the first column and the type of variable in the second column (i.e. use for the type of variable the term “categorical”, “ordinal” or “quantitative”). [TIP: no need to do the table in R, just use `str()`, `typeof()` and `summary()` functions to support the creation of the table].
+  2. Are all the quantitative variables of your database normally distributed? Use graphs to support your answer. Provide two figures: one for the histograms and other for the quantile-quantile plots to support your answer [TIP: use `par()` `hist()` and `qqnorm()` functions].
+  3. Do you believe that the t-test is the best option to respond to this question? Justify your answer. Try to reproduce the analysis conducted by the regional veterinary authorities (i.e. t-test) and provide the code and the results.
+  4. Which (more appropriate) statistical test would you use to support (or reject) with statistical evidence the hypothesis of the regional veterinary authorities? Provide the R-code to run the statistical analysis, the results and an interpretation of your findings. [Note: consider the information obtained in question 2 and the table provided above to decide the appropriate type of test to use]. Compare this result with the one obtained in question 3.
+  5. Statistically evaluate whether or not there are significant differences in TB prevalence in the four categories of farms using the EJ$catCensus variable. Which test would you use for this? Provide the R-code, the results and the interpretation of your findings. Also provide a boxplot to support your results [Tip: use the boxplot () function].
+  6. Select an appropriate test to evaluate the statistical association between TB prevalence and a) the number of incoming shipments of cattle per year, b) presence or absence of sheep on farm and, c) mean number of fenced hunting states in a 3km radius around the farm. Provide the code, the results and an interpretation of your findings. Now, do the same but with TB incidence (using the same 3 predictors)
