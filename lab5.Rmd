@@ -1,5 +1,5 @@
 ---
-title: "Lab 3 - Data handling, validation and manipulation in R"
+title: "Lab 5 - Selecting the right analytical method: Fundamentals and interpretation of results."
 output:
   html_document: 
     toc: true
@@ -10,18 +10,48 @@ editor_options:
     wrap: 72
 ---
 
+# Objectives
+  
+  - Select the appropriate statistical test and graphical methods to compare groups and analyze different types of epidemiological data using R language.
+  - Be able to properly interpret the results of those statistical tests.
+  - Get further insight into the use and implementation of R environment for analysis of epidemiological data.
+  
+# Instructions
+  
+  - Follow the guidelines and answer the questions. Remember to send the answers in a pdf document labeled as “YOUR_LAST_NAME_Lab 5” using CANVAS before 12:00pm, February 13th.
+  - Do not hesitate to ask the instructor if you have any questions.
 
+We will continue using the dataset provided dataTB.txt contains the following information regarding cattle farms in Ciudad Real during 2005:
+
+![](img/w3/dataDictionary.png)
+
+The table below will provide you general guidelines to choose the appropriate statistical test for the different exercises of this lab. Have a look at it and continue reading below.
+
+![](img/w5/statTests.png)
+
+
+We are going to start exploring the potential association between hypothesized risk factors and TB prevalence
+and/or incidence, using bivariate analysis but, first, answer QUESTION 1 and 2.
+5) The regional veterinary authorities of Ciudad Real (i.e. our study region) believe that the TB prevalence in Beef
+farms is significantly higher than the prevalence in Dairy farms, however, they failed to find any statistical
+association (using a t-test). Answer QUESTION 3 and 4.
+6) Continue exploring the other variables in the dataset and their potential associations with TB prevalence or TB
+incidence on the farm. Answer QUESTION 5 and 6.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-# load the packages
-
-library(dplyr)
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
 ```
 
-First we will load the data that we previously used on Lab 3. Remember changing the path to the location of the data in your computer:
+# Loading the data
+
+First we will load the libraries we will use and the data that we previously used on Lab 3. Remember changing the path to the location of the data in your computer:
 
 ```{r load the data}
+# Load libraries --------
+library(dplyr) # for data manipulation
+library(ggplot2) # For visualization
+
+# Load data ----------
 EJ <- read.csv("data/dataTb.csv")
 
 # We will recode some of the variables
