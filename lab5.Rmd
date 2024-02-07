@@ -42,7 +42,9 @@ incidence on the farm. Answer QUESTION 5 and 6.
 knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
 ```
 
-# Loading the data
+# Lab portion
+
+## Loading the data
 
 First we will load the libraries we will use and the data that we previously used on Lab 3. Remember changing the path to the location of the data in your computer:
 
@@ -83,7 +85,7 @@ typeof(EJ$Census)
 summary(EJ)
 ```
 
-# Examine normality of the variables:
+## Examine normality of the variables:
 
 ```{r}
 ## Best choice is to graphically evaluate your data ##
@@ -132,9 +134,9 @@ shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample c
 # ad.test(EJ$Prev) 
 ```
 
-# Bivariate analysis
+## Bivariate analysis
 
-## T test
+### T test
 
 ```{r}
 ### one and two-sample t-test ####
@@ -142,7 +144,7 @@ shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample c
 t.test(Census~Type, data=EJ)
 ```
 
-## Wilcoxon
+### Wilcoxon
 
 ```{r}
 ### Wincoxon (or Mann-Whitney test) ###
@@ -165,7 +167,7 @@ wilcox_test(Prev~factor(goat), data=EJ, distribution="asymptotic",alternative="g
 wilcox_test(Prev~factor(goat), data=EJ, distribution="exact",alternative="greater", conf.int=TRUE)
 ```
 
-## Chi-squared
+### Chi-squared
 
 ```{r}
 ## Pearson's Chi-squared test ###
@@ -173,7 +175,7 @@ wilcox_test(Prev~factor(goat), data=EJ, distribution="exact",alternative="greate
 chisq.test(EJ$Incid, EJ$census_b)
 ```
 
-## Fishers
+### Fishers
 
 ```{r}
 ## Fisher's exact test  ###
@@ -181,7 +183,7 @@ chisq.test(EJ$Incid, EJ$census_b)
 fisher.test(EJ$Incid, EJ$census_b)
 ```
 
-## Kruskal-Wallis
+### Kruskal-Wallis
 
 ```{r}
 ### Kruskal-Wallis Rank Sum Test ###
@@ -193,7 +195,7 @@ kt$statistic ## to get only the Kruskal-Wallis chi-squared statistic #
 kt$p.value  ## to get only the p-value ##
 ```
 
-## Pairwise differences
+### Pairwise differences
 
 ```{r}
 ##pairwise differences ###
@@ -201,7 +203,7 @@ kt$p.value  ## to get only the p-value ##
 pairwise.wilcox.test(EJ$Prev, EJ$catCensus, p.adj="bonferroni", exact=F, paired=F)
 ```
 
-## ANOVA
+### ANOVA
 
 ```{r}
 ### Analysis of Variance ###
@@ -213,9 +215,9 @@ par(mfrow=c(2,2), mar=c(4,4,4,4))
 plot(av)
 ```
 
-## Correlation
+### Correlation
 
-### Pearson
+#### Pearson
 
 ```{r}
 #### Correlation tests ###
@@ -224,7 +226,7 @@ cor.test(EJ$Prev, EJ$Census, method=c("pearson"))
 ```
 
 
-### Spearman
+#### Spearman
 
 ```{r}
 #Spearman correlation##
@@ -233,7 +235,7 @@ cor.test(EJ$MOV_year, EJ$Census, method=c("spearman"))
 ```
 
 
-## Regression
+### Regression
 
 ```{r}
 #simple logistic regression##

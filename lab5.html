@@ -411,8 +411,10 @@ exploring the other variables in the dataset and their potential
 associations with TB prevalence or TB incidence on the farm. Answer
 QUESTION 5 and 6.</p>
 </div>
-<div id="loading-the-data" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Loading the data</h1>
+<div id="lab-portion" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Lab portion</h1>
+<div id="loading-the-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Loading the data</h2>
 <p>First we will load the libraries we will use and the data that we
 previously used on Lab 3. Remember changing the path to the location of
 the data in your computer:</p>
@@ -499,10 +501,10 @@ str(EJ)</code></pre>
 ##                       3rd Qu.:1.0  
 ##                       Max.   :1.0</code></pre>
 </div>
-<div id="examine-normality-of-the-variables" class="section level1"
-number="4">
-<h1><span class="header-section-number">4</span> Examine normality of
-the variables:</h1>
+<div id="examine-normality-of-the-variables" class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> Examine normality of
+the variables:</h2>
 <pre class="r"><code>## Best choice is to graphically evaluate your data ##
 ## histograms ##
 ggplot(data = EJ) +
@@ -542,10 +544,11 @@ shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample c
 # library(nortest)
 # ad.test(EJ$Prev) </code></pre>
 </div>
-<div id="bivariate-analysis" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Bivariate analysis</h1>
-<div id="t-test" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> T test</h2>
+<div id="bivariate-analysis" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Bivariate
+analysis</h2>
+<div id="t-test" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> T test</h3>
 <pre class="r"><code>### one and two-sample t-test ####
     # use &quot;?t.test&quot; to know more about this function##
 t.test(Census~Type, data=EJ)</code></pre>
@@ -561,8 +564,8 @@ t.test(Census~Type, data=EJ)</code></pre>
 ##  mean in group BEEF mean in group DAIRY 
 ##           108.97511            58.74699</code></pre>
 </div>
-<div id="wilcoxon" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Wilcoxon</h2>
+<div id="wilcoxon" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Wilcoxon</h3>
 <pre class="r"><code>### Wincoxon (or Mann-Whitney test) ###
     # use &quot;?wilcox.test&quot; to know more about this function##
 wilcox.test(Census~Type, data=EJ)</code></pre>
@@ -602,8 +605,8 @@ library(coin)
 wilcox_test(Prev~factor(goat), data=EJ, distribution=&quot;asymptotic&quot;,alternative=&quot;greater&quot;, conf.int=TRUE)
 wilcox_test(Prev~factor(goat), data=EJ, distribution=&quot;exact&quot;,alternative=&quot;greater&quot;, conf.int=TRUE)</code></pre>
 </div>
-<div id="chi-squared" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Chi-squared</h2>
+<div id="chi-squared" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Chi-squared</h3>
 <pre class="r"><code>## Pearson&#39;s Chi-squared test ###
   # use ?chisq.test to know more about this function##
 chisq.test(EJ$Incid, EJ$census_b)</code></pre>
@@ -613,8 +616,8 @@ chisq.test(EJ$Incid, EJ$census_b)</code></pre>
 ## data:  EJ$Incid and EJ$census_b
 ## X-squared = 15.248, df = 1, p-value = 9.425e-05</code></pre>
 </div>
-<div id="fishers" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Fishers</h2>
+<div id="fishers" class="section level3" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Fishers</h3>
 <pre class="r"><code>## Fisher&#39;s exact test  ###
   # use ?fisher.test to know more about this function##
 fisher.test(EJ$Incid, EJ$census_b)</code></pre>
@@ -630,8 +633,8 @@ fisher.test(EJ$Incid, EJ$census_b)</code></pre>
 ## odds ratio 
 ##   1.959496</code></pre>
 </div>
-<div id="kruskal-wallis" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Kruskal-Wallis</h2>
+<div id="kruskal-wallis" class="section level3" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Kruskal-Wallis</h3>
 <pre class="r"><code>### Kruskal-Wallis Rank Sum Test ###
     # use ?kruskal.test to know more about this function##
 kt&lt;-kruskal.test(Census~Type, data=EJ)
@@ -657,9 +660,9 @@ print(kt)</code></pre>
 <pre class="r"><code>kt$p.value  ## to get only the p-value ##</code></pre>
 <pre><code>## [1] 2.514368e-12</code></pre>
 </div>
-<div id="pairwise-differences" class="section level2" number="5.6">
-<h2><span class="header-section-number">5.6</span> Pairwise
-differences</h2>
+<div id="pairwise-differences" class="section level3" number="3.3.6">
+<h3><span class="header-section-number">3.3.6</span> Pairwise
+differences</h3>
 <pre class="r"><code>##pairwise differences ###
 
 pairwise.wilcox.test(EJ$Prev, EJ$catCensus, p.adj=&quot;bonferroni&quot;, exact=F, paired=F)</code></pre>
@@ -675,8 +678,8 @@ pairwise.wilcox.test(EJ$Prev, EJ$catCensus, p.adj=&quot;bonferroni&quot;, exact=
 ## 
 ## P value adjustment method: bonferroni</code></pre>
 </div>
-<div id="anova" class="section level2" number="5.7">
-<h2><span class="header-section-number">5.7</span> ANOVA</h2>
+<div id="anova" class="section level3" number="3.3.7">
+<h3><span class="header-section-number">3.3.7</span> ANOVA</h3>
 <pre class="r"><code>### Analysis of Variance ###
 av&lt;-aov(EJ$Prev~EJ$catCensus)
 summary(av)</code></pre>
@@ -705,10 +708,10 @@ summary(av)</code></pre>
 plot(av)</code></pre>
 <p><img src="lab5_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
-<div id="correlation" class="section level2" number="5.8">
-<h2><span class="header-section-number">5.8</span> Correlation</h2>
-<div id="pearson" class="section level3" number="5.8.1">
-<h3><span class="header-section-number">5.8.1</span> Pearson</h3>
+<div id="correlation" class="section level3" number="3.3.8">
+<h3><span class="header-section-number">3.3.8</span> Correlation</h3>
+<div id="pearson" class="section level4" number="3.3.8.1">
+<h4><span class="header-section-number">3.3.8.1</span> Pearson</h4>
 <pre class="r"><code>#### Correlation tests ###
 #Pearson correlation##
 cor.test(EJ$Prev, EJ$Census, method=c(&quot;pearson&quot;))</code></pre>
@@ -724,8 +727,8 @@ cor.test(EJ$Prev, EJ$Census, method=c(&quot;pearson&quot;))</code></pre>
 ##        cor 
 ## 0.01688062</code></pre>
 </div>
-<div id="spearman" class="section level3" number="5.8.2">
-<h3><span class="header-section-number">5.8.2</span> Spearman</h3>
+<div id="spearman" class="section level4" number="3.3.8.2">
+<h4><span class="header-section-number">3.3.8.2</span> Spearman</h4>
 <pre class="r"><code>#Spearman correlation##
 cor.test(EJ$Prev, EJ$Census, method=c(&quot;spearman&quot;))</code></pre>
 <pre><code>## 
@@ -749,8 +752,8 @@ cor.test(EJ$Prev, EJ$Census, method=c(&quot;spearman&quot;))</code></pre>
 ## 0.3587165</code></pre>
 </div>
 </div>
-<div id="regression" class="section level2" number="5.9">
-<h2><span class="header-section-number">5.9</span> Regression</h2>
+<div id="regression" class="section level3" number="3.3.9">
+<h3><span class="header-section-number">3.3.9</span> Regression</h3>
 <pre class="r"><code>#simple logistic regression##
 m1&lt;-glm(EJ$Incid~EJ$Census, family=binomial(link=&quot;logit&quot;))
 summary(m1)</code></pre>
@@ -774,8 +777,9 @@ summary(m1)</code></pre>
 ## Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
-<div id="questions" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Questions</h1>
+</div>
+<div id="questions" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Questions</h1>
 <ol style="list-style-type: decimal">
 <li>What type of variables do you have in the “dataTB” database? Provide
 a table in which you include the name of the variable in the first
