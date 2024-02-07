@@ -546,7 +546,7 @@ Next week we will go more in detail into how to make our figures pretty
 # QUESTIONS
 
 Render the document using the Rmd engine and submit your responses as a
-word document or pdf. **DO NOT SUBMIT IT AS A HTML or Rmd.**
+word document or pdf. **DO NOT SUBMIT IT AS Rmd.**
 
 1.  How many rows and columns do you have in the dataset "dataTB.csv"?
     Using R, provide a table displaying the information contained in the

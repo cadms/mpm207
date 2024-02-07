@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Lab 3 - Data handling, validation and manipulation in R</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><img id="logo" style="width: 30px;" src="img/cadms-logo.png" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Contact
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Instructors.html">
+        <span class="fa fa-users"></span>
+         
+        Instructors
+      </a>
+    </li>
+    <li>
+      <a href="https://cadms.vetmed.ucdavis.edu">
+        <span class="fa fa-server"></span>
+         
+        CADMS Website
+      </a>
+    </li>
+    <li>
+      <a href="mailto:jpgo@ucdavis.edu">
+        <span class="fa fa-envelope"></span>
+         
+        Email
+      </a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 3 - Data handling, validation and
+manipulation in R</h1>
+
+</div>
+
+
+<p>First we will load the data that we previously used on Lab 3.
+Remember changing the path to the location of the data in your
+computer:</p>
+<pre class="r"><code>EJ &lt;- read.csv(&quot;data/dataTb.csv&quot;)
+
+# We will recode some of the variables
+EJ &lt;- EJ %&gt;% 
+  mutate(
+    catCensus = cut(Census,breaks=quantile(EJ$Census), include.lowest=TRUE), #Create a categorical variable using quantiles
+    census_b = ifelse(Census &gt; median(Census),1,0) # Create a binomial variable (YES/NO~1/0) using the median as cut-off point
+  )</code></pre>
+<p>Now we will examine the normality of some of the variables</p>
+<pre class="r"><code>par(mfrow=c(2,3),mar=c(4,4,4,4))
+qqnorm(EJ$Prev)
+qqnorm(EJ$Census)
+qqnorm(EJ$MOV_year)
+qqnorm(EJ$MOV_cen)
+qqnorm(EJ$ANIM_mov)
+qqnorm(EJ$MEANfenced)</code></pre>
+<p><img src="lab5_files/figure-html/examine%20normality%20of%20the%20data-1.png" width="672" /></p>
+<p>We can examine some of the variables using different functions:</p>
+<pre class="r"><code>## some useful functions to know more about the type of variables of your database#
+str(EJ)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    766 obs. of  18 variables:
+##  $ ID_farm   : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Mun       : chr  &quot;GUADALMEZ&quot; &quot;GUADALMEZ&quot; &quot;GUADALMEZ&quot; &quot;GUADALMEZ&quot; ...
+##  $ Com       : chr  &quot;ALMADEN&quot; &quot;ALMADEN&quot; &quot;ALMADEN&quot; &quot;ALMADEN&quot; ...
+##  $ Census    : int  14 200 38 70 95 19 115 150 137 84 ...
+##  $ Prev      : num  1.04 0 0 0 0.56 0 0 0 0.77 0 ...
+##  $ Incid     : int  1 0 0 0 1 0 0 0 0 0 ...
+##  $ Xcoor     : num  325389 327652 329353 328481 326659 ...
+##  $ Ycoor     : num  4289645 4291586 4294230 4287725 4286466 ...
+##  $ Type      : chr  &quot;BEEF&quot; &quot;BEEF&quot; &quot;BEEF&quot; &quot;BEEF&quot; ...
+##  $ MOV_year  : num  0 3 0.5 0.83 0.5 1.33 0.83 0.33 0.17 0.33 ...
+##  $ MOV_cen   : num  0 1.5 1.33 1.2 0.53 7.02 0.72 0.22 0.12 0.4 ...
+##  $ ANIM_mov  : int  0 119 14 5 26 21 11 12 1 4 ...
+##  $ goat      : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ sheep     : int  0 0 0 1 1 0 1 1 1 0 ...
+##  $ pig       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ MEANfenced: num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ catCensus : Factor w/ 4 levels &quot;[1,33]&quot;,&quot;(33,67.5]&quot;,..: 1 4 2 3 3 1 3 4 4 3 ...
+##  $ census_b  : num  0 1 0 1 1 0 1 1 1 1 ...</code></pre>
+<pre class="r"><code>typeof(EJ$Census)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>summary(EJ)</code></pre>
+<pre><code>##     ID_farm          Mun                Com                Census      
+##  Min.   :  1.0   Length:766         Length:766         Min.   :   1.0  
+##  1st Qu.:192.2   Class :character   Class :character   1st Qu.:  33.0  
+##  Median :383.5   Mode  :character   Mode  :character   Median :  67.5  
+##  Mean   :383.5                                         Mean   : 103.5  
+##  3rd Qu.:574.8                                         3rd Qu.: 133.8  
+##  Max.   :766.0                                         Max.   :1162.0  
+##       Prev            Incid            Xcoor            Ycoor        
+##  Min.   : 0.000   Min.   :0.0000   Min.   :325389   Min.   :4241223  
+##  1st Qu.: 0.000   1st Qu.:0.0000   1st Qu.:359737   1st Qu.:4283430  
+##  Median : 0.000   Median :0.0000   Median :380604   Median :4307838  
+##  Mean   : 1.248   Mean   :0.2533   Mean   :382761   Mean   :4309850  
+##  3rd Qu.: 1.397   3rd Qu.:1.0000   3rd Qu.:400676   3rd Qu.:4333357  
+##  Max.   :16.670   Max.   :1.0000   Max.   :525037   Max.   :4381235  
+##      Type              MOV_year          MOV_cen           ANIM_mov      
+##  Length:766         Min.   : 0.0000   Min.   : 0.0000   Min.   :   0.00  
+##  Class :character   1st Qu.: 0.1700   1st Qu.: 0.1725   1st Qu.:   1.00  
+##  Mode  :character   Median : 0.5000   Median : 0.5800   Median :   6.00  
+##                     Mean   : 0.9076   Mean   : 1.6827   Mean   :  36.91  
+##                     3rd Qu.: 1.0000   3rd Qu.: 1.5150   3rd Qu.:  30.75  
+##                     Max.   :14.0000   Max.   :66.6700   Max.   :1154.00  
+##       goat             sheep             pig           MEANfenced    
+##  Min.   :0.00000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :0.00000   Median :0.0000   Median :0.0000   Median :0.1400  
+##  Mean   :0.03003   Mean   :0.3159   Mean   :0.1031   Mean   :0.1821  
+##  3rd Qu.:0.00000   3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:0.3200  
+##  Max.   :1.00000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000  
+##           catCensus      census_b  
+##  [1,33]        :198   Min.   :0.0  
+##  (33,67.5]     :185   1st Qu.:0.0  
+##  (67.5,134]    :191   Median :0.5  
+##  (134,1.16e+03]:192   Mean   :0.5  
+##                       3rd Qu.:1.0  
+##                       Max.   :1.0</code></pre>
+<div id="examine-normality-of-the-variables" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Examine normality of
+the variables:</h1>
+<pre class="r"><code>## Best choice is to graphically evaluate your data ##
+## histograms ##
+par(mfrow=c(1,2)) 
+hist(EJ$Prev)
+hist(EJ$Census)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>## normal quantile-quantile plots ##
+qqnorm(EJ$Prev)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>qqnorm(EJ$Census)
+cf&lt;-lm(EJ$Census~1)
+abline(a=-3, b=coef(cf),col=&quot;blue&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>## boxplots ###
+boxplot(EJ$Prev, outline=FALSE)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(EJ$Census~EJ$Type, outline=FALSE, pty=19, las=1, cex.lab=1.3, cex.axis=0.9, ylab=&quot;Cattle census&quot;, xlab=&quot;type of farm&quot;)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>##### alternatively #####
+## I don&#39;t like and I do not recommended to use...but there are also some normality tests ##
+## e.g. Shapiro-Wilk normality test ##
+#H0: sample comes from a normal distribution, if W is small and p&lt;0.05, we reject H0. ## 
+shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample comes from a normal distribution(p-value &lt;0.05, sample deviates from normality)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  EJ$Prev
+## W = 0.58224, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>#similar test than the above will be the Anderson-Darling test for normality:#
+# install.packages(&quot;nortest&quot;)
+# library(nortest)
+# ad.test(EJ$Prev) </code></pre>
+</div>
+<div id="bivariate-analysis" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Bivariate analysis</h1>
+<div id="t-test" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> T test</h2>
+<pre class="r"><code>### one and two-sample t-test ####
+    # use &quot;?t.test&quot; to know more about this function##
+t.test(Census~Type, data=EJ)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Census by Type
+## t = 3.259, df = 97.151, p-value = 0.001542
+## alternative hypothesis: true difference in means between group BEEF and group DAIRY is not equal to 0
+## 95 percent confidence interval:
+##  19.63991 80.81633
+## sample estimates:
+##  mean in group BEEF mean in group DAIRY 
+##           108.97511            58.74699</code></pre>
+</div>
+<div id="wilcoxon" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Wilcoxon</h2>
+<pre class="r"><code>### Wincoxon (or Mann-Whitney test) ###
+    # use &quot;?wilcox.test&quot; to know more about this function##
+wilcox.test(Census~Type, data=EJ)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  Census by Type
+## W = 41674, p-value = 2.519e-12
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code>wilcox.test(Census~Type, data=EJ, exact=TRUE,alternative=&quot;greater&quot;, conf.int=TRUE)</code></pre>
+<pre><code>## Warning in wilcox.test.default(x = DATA[[1L]], y = DATA[[2L]], ...): cannot
+## compute exact p-value with ties</code></pre>
+<pre><code>## Warning in wilcox.test.default(x = DATA[[1L]], y = DATA[[2L]], ...): cannot
+## compute exact confidence intervals with ties</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  Census by Type
+## W = 41674, p-value = 1.26e-12
+## alternative hypothesis: true location shift is greater than 0
+## 95 percent confidence interval:
+##  28.99998      Inf
+## sample estimates:
+## difference in location 
+##               38.00007</code></pre>
+<pre class="r"><code>  ##alternatively, the same thing than above:###
+  wilcox.test(EJ$Census[EJ$Type==&quot;BEEF&quot;], EJ$Census[EJ$Type==&quot;DAIRY&quot;], exact=TRUE,alternative=&quot;greater&quot;)</code></pre>
+<pre><code>## Warning in wilcox.test.default(EJ$Census[EJ$Type == &quot;BEEF&quot;], EJ$Census[EJ$Type
+## == : cannot compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  EJ$Census[EJ$Type == &quot;BEEF&quot;] and EJ$Census[EJ$Type == &quot;DAIRY&quot;]
+## W = 41674, p-value = 1.26e-12
+## alternative hypothesis: true location shift is greater than 0</code></pre>
+<pre class="r"><code>## to compute exact p-values with ties (i.e. ties=&quot;zeroes&quot; --&gt; a tie occur when the value of the observation is equal to the hypothesized median##
+install.packages(&quot;coin&quot;)
+library(coin)
+# use ?wilcox_test to know more about this function##
+#you may try to run the two next lines below but may take time!...
+#w&lt;-wilcox_test(Census~Type, data=EJ, distribution=&quot;exact&quot;,alternative=&quot;greater&quot;, conf.int=TRUE)  ##note that this may take time as it is an exact calculation!!
+#print(w)
+wilcox_test(Prev~factor(goat), data=EJ, distribution=&quot;asymptotic&quot;,alternative=&quot;greater&quot;, conf.int=TRUE)
+wilcox_test(Prev~factor(goat), data=EJ, distribution=&quot;exact&quot;,alternative=&quot;greater&quot;, conf.int=TRUE)</code></pre>
+</div>
+<div id="chi-squared" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Chi-squared</h2>
+<pre class="r"><code>## Pearson&#39;s Chi-squared test ###
+  # use ?chisq.test to know more about this function##
+chisq.test(EJ$Incid, EJ$census_b)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  EJ$Incid and EJ$census_b
+## X-squared = 15.248, df = 1, p-value = 9.425e-05</code></pre>
+</div>
+<div id="fishers" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Fishers</h2>
+<pre class="r"><code>## Fisher&#39;s exact test  ###
+  # use ?fisher.test to know more about this function##
+fisher.test(EJ$Incid, EJ$census_b)</code></pre>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  EJ$Incid and EJ$census_b
+## p-value = 8.889e-05
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  1.386874 2.781627
+## sample estimates:
+## odds ratio 
+##   1.959496</code></pre>
+</div>
+<div id="kruskal-wallis" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Kruskal-Wallis</h2>
+<pre class="r"><code>### Kruskal-Wallis Rank Sum Test ###
+    # use ?kruskal.test to know more about this function##
+kt&lt;-kruskal.test(Census~Type, data=EJ)
+print(kt)</code></pre>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  Census by Type
+## Kruskal-Wallis chi-squared = 49.035, df = 1, p-value = 2.514e-12</code></pre>
+<pre class="r"><code>str(kt)  ##to explore more about the structure of this function and being able to call specific terms as below #</code></pre>
+<pre><code>## List of 5
+##  $ statistic: Named num 49
+##   ..- attr(*, &quot;names&quot;)= chr &quot;Kruskal-Wallis chi-squared&quot;
+##  $ parameter: Named int 1
+##   ..- attr(*, &quot;names&quot;)= chr &quot;df&quot;
+##  $ p.value  : num 2.51e-12
+##  $ method   : chr &quot;Kruskal-Wallis rank sum test&quot;
+##  $ data.name: chr &quot;Census by Type&quot;
+##  - attr(*, &quot;class&quot;)= chr &quot;htest&quot;</code></pre>
+<pre class="r"><code>kt$statistic ## to get only the Kruskal-Wallis chi-squared statistic #</code></pre>
+<pre><code>## Kruskal-Wallis chi-squared 
+##                   49.03499</code></pre>
+<pre class="r"><code>kt$p.value  ## to get only the p-value ##</code></pre>
+<pre><code>## [1] 2.514368e-12</code></pre>
+</div>
+<div id="pairwise-differences" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Pairwise
+differences</h2>
+<pre class="r"><code>##pairwise differences ###
+
+pairwise.wilcox.test(EJ$Prev, EJ$catCensus, p.adj=&quot;bonferroni&quot;, exact=F, paired=F)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+## 
+## data:  EJ$Prev and EJ$catCensus 
+## 
+##                [1,33]  (33,67.5] (67.5,134]
+## (33,67.5]      0.013   -         -         
+## (67.5,134]     8.8e-08 0.049     -         
+## (134,1.16e+03] 2.2e-06 0.280     1.000     
+## 
+## P value adjustment method: bonferroni</code></pre>
+</div>
+<div id="anova" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> ANOVA</h2>
+<pre class="r"><code>### Analysis of Variance ###
+av&lt;-aov(EJ$Prev~EJ$catCensus)
+summary(av)</code></pre>
+<pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## EJ$catCensus   3     50  16.534   2.728 0.0431 *
+## Residuals    762   4618   6.061                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>print(av)</code></pre>
+<pre><code>## Call:
+##    aov(formula = EJ$Prev ~ EJ$catCensus)
+## 
+## Terms:
+##                 EJ$catCensus Residuals
+## Sum of Squares        49.602  4618.378
+## Deg. of Freedom            3       762
+## 
+## Residual standard error: 2.461882
+## Estimated effects may be unbalanced</code></pre>
+<pre class="r"><code>coefficients(av)</code></pre>
+<pre><code>##                (Intercept)      EJ$catCensus(33,67.5] 
+##                  0.8907576                  0.2766478 
+##     EJ$catCensus(67.5,134] EJ$catCensus(134,1.16e+03] 
+##                  0.6824885                  0.4807008</code></pre>
+<pre class="r"><code>par(mfrow=c(2,2), mar=c(4,4,4,4))
+plot(av)</code></pre>
+<p><img src="lab5_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="correlation" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Correlation</h2>
+<div id="pearson" class="section level3" number="2.8.1">
+<h3><span class="header-section-number">2.8.1</span> Pearson</h3>
+<pre class="r"><code>#### Correlation tests ###
+#Pearson correlation##
+cor.test(EJ$Prev, EJ$Census, method=c(&quot;pearson&quot;))</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  EJ$Prev and EJ$Census
+## t = 0.46666, df = 764, p-value = 0.6409
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.05402060  0.08761247
+## sample estimates:
+##        cor 
+## 0.01688062</code></pre>
+</div>
+<div id="spearman" class="section level3" number="2.8.2">
+<h3><span class="header-section-number">2.8.2</span> Spearman</h3>
+<pre class="r"><code>#Spearman correlation##
+cor.test(EJ$Prev, EJ$Census, method=c(&quot;spearman&quot;))</code></pre>
+<pre><code>## Warning in cor.test.default(EJ$Prev, EJ$Census, method = c(&quot;spearman&quot;)): Cannot
+## compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Spearman&#39;s rank correlation rho
+## 
+## data:  EJ$Prev and EJ$Census
+## S = 59399389, p-value = 7.303e-09
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## 0.2070466</code></pre>
+<pre class="r"><code>cor.test(EJ$MOV_year, EJ$Census, method=c(&quot;spearman&quot;))</code></pre>
+<pre><code>## Warning in cor.test.default(EJ$MOV_year, EJ$Census, method = c(&quot;spearman&quot;)):
+## Cannot compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Spearman&#39;s rank correlation rho
+## 
+## data:  EJ$MOV_year and EJ$Census
+## S = 48037938, p-value &lt; 2.2e-16
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## 0.3587165</code></pre>
+</div>
+</div>
+<div id="regression" class="section level2" number="2.9">
+<h2><span class="header-section-number">2.9</span> Regression</h2>
+<pre class="r"><code>#simple logistic regression##
+m1&lt;-glm(EJ$Incid~EJ$Census, family=binomial(link=&quot;logit&quot;))
+summary(m1)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = EJ$Incid ~ EJ$Census, family = binomial(link = &quot;logit&quot;))
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.1988861  0.1101081 -10.888   &lt;2e-16 ***
+## EJ$Census    0.0010986  0.0006542   1.679   0.0931 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 866.95  on 765  degrees of freedom
+## Residual deviance: 864.22  on 764  degrees of freedom
+## AIC: 868.22
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

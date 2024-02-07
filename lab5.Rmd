@@ -1,0 +1,204 @@
+---
+title: "Lab 3 - Data handling, validation and manipulation in R"
+output:
+  html_document: 
+    toc: true
+    toc_float: true
+    number_sections: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# load the packages
+
+library(dplyr)
+```
+
+First we will load the data that we previously used on Lab 3. Remember changing the path to the location of the data in your computer:
+
+```{r load the data}
+EJ <- read.csv("data/dataTb.csv")
+
+# We will recode some of the variables
+EJ <- EJ %>% 
+  mutate(
+    catCensus = cut(Census,breaks=quantile(EJ$Census), include.lowest=TRUE), #Create a categorical variable using quantiles
+    census_b = ifelse(Census > median(Census),1,0) # Create a binomial variable (YES/NO~1/0) using the median as cut-off point
+  )
+```
+
+Now we will examine the normality of some of the variables
+
+```{r examine normality of the data}
+par(mfrow=c(2,3),mar=c(4,4,4,4))
+qqnorm(EJ$Prev)
+qqnorm(EJ$Census)
+qqnorm(EJ$MOV_year)
+qqnorm(EJ$MOV_cen)
+qqnorm(EJ$ANIM_mov)
+qqnorm(EJ$MEANfenced)
+```
+
+We can examine some of the variables using different functions:
+
+```{r examine variables}
+## some useful functions to know more about the type of variables of your database#
+str(EJ)
+typeof(EJ$Census)
+summary(EJ)
+```
+
+# Examine normality of the variables:
+
+```{r}
+## Best choice is to graphically evaluate your data ##
+## histograms ##
+par(mfrow=c(1,2)) 
+hist(EJ$Prev)
+hist(EJ$Census)
+```
+
+```{r}
+## normal quantile-quantile plots ##
+qqnorm(EJ$Prev)
+qqnorm(EJ$Census)
+cf<-lm(EJ$Census~1)
+abline(a=-3, b=coef(cf),col="blue")
+```
+
+
+```{r}
+## boxplots ###
+boxplot(EJ$Prev, outline=FALSE)
+boxplot(EJ$Census~EJ$Type, outline=FALSE, pty=19, las=1, cex.lab=1.3, cex.axis=0.9, ylab="Cattle census", xlab="type of farm")
+```
+
+```{r using shapiro test}
+##### alternatively #####
+## I don't like and I do not recommended to use...but there are also some normality tests ##
+## e.g. Shapiro-Wilk normality test ##
+#H0: sample comes from a normal distribution, if W is small and p<0.05, we reject H0. ## 
+shapiro.test(EJ$Prev) ##p-value here gives you the probability that the sample comes from a normal distribution(p-value <0.05, sample deviates from normality)
+```
+
+
+```{r}
+#similar test than the above will be the Anderson-Darling test for normality:#
+# install.packages("nortest")
+# library(nortest)
+# ad.test(EJ$Prev) 
+```
+
+# Bivariate analysis
+
+## T test
+
+```{r}
+### one and two-sample t-test ####
+    # use "?t.test" to know more about this function##
+t.test(Census~Type, data=EJ)
+```
+
+## Wilcoxon
+
+```{r}
+### Wincoxon (or Mann-Whitney test) ###
+    # use "?wilcox.test" to know more about this function##
+wilcox.test(Census~Type, data=EJ)
+wilcox.test(Census~Type, data=EJ, exact=TRUE,alternative="greater", conf.int=TRUE)
+  ##alternatively, the same thing than above:###
+  wilcox.test(EJ$Census[EJ$Type=="BEEF"], EJ$Census[EJ$Type=="DAIRY"], exact=TRUE,alternative="greater")
+```
+
+```{r eval = F}
+## to compute exact p-values with ties (i.e. ties="zeroes" --> a tie occur when the value of the observation is equal to the hypothesized median##
+install.packages("coin")
+library(coin)
+# use ?wilcox_test to know more about this function##
+#you may try to run the two next lines below but may take time!...
+#w<-wilcox_test(Census~Type, data=EJ, distribution="exact",alternative="greater", conf.int=TRUE)  ##note that this may take time as it is an exact calculation!!
+#print(w)
+wilcox_test(Prev~factor(goat), data=EJ, distribution="asymptotic",alternative="greater", conf.int=TRUE)
+wilcox_test(Prev~factor(goat), data=EJ, distribution="exact",alternative="greater", conf.int=TRUE)
+```
+
+## Chi-squared
+
+```{r}
+## Pearson's Chi-squared test ###
+  # use ?chisq.test to know more about this function##
+chisq.test(EJ$Incid, EJ$census_b)
+```
+
+## Fishers
+
+```{r}
+## Fisher's exact test  ###
+  # use ?fisher.test to know more about this function##
+fisher.test(EJ$Incid, EJ$census_b)
+```
+
+## Kruskal-Wallis
+
+```{r}
+### Kruskal-Wallis Rank Sum Test ###
+    # use ?kruskal.test to know more about this function##
+kt<-kruskal.test(Census~Type, data=EJ)
+print(kt)
+str(kt)  ##to explore more about the structure of this function and being able to call specific terms as below #
+kt$statistic ## to get only the Kruskal-Wallis chi-squared statistic #
+kt$p.value  ## to get only the p-value ##
+```
+
+## Pairwise differences
+
+```{r}
+##pairwise differences ###
+
+pairwise.wilcox.test(EJ$Prev, EJ$catCensus, p.adj="bonferroni", exact=F, paired=F)
+```
+
+## ANOVA
+
+```{r}
+### Analysis of Variance ###
+av<-aov(EJ$Prev~EJ$catCensus)
+summary(av)
+print(av)
+coefficients(av)
+par(mfrow=c(2,2), mar=c(4,4,4,4))
+plot(av)
+```
+
+## Correlation
+
+### Pearson
+
+```{r}
+#### Correlation tests ###
+#Pearson correlation##
+cor.test(EJ$Prev, EJ$Census, method=c("pearson"))
+```
+
+
+### Spearman
+
+```{r}
+#Spearman correlation##
+cor.test(EJ$Prev, EJ$Census, method=c("spearman"))
+cor.test(EJ$MOV_year, EJ$Census, method=c("spearman"))
+```
+
+
+## Regression
+
+```{r}
+#simple logistic regression##
+m1<-glm(EJ$Incid~EJ$Census, family=binomial(link="logit"))
+summary(m1)
+```
