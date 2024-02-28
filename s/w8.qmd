@@ -305,3 +305,7 @@ ggplot() + # call the ggplot2 function
 ```
 
 ![](img/w8/8p07.png){fig-align="center"}
+
+# Lab time!
+
+[https://cadms.github.io/mpm207/lab8.html](https://cadms.github.io/mpm207/lab8.html){preview-link="true" style="font-size:160%"}

@@ -199,7 +199,7 @@ t.test(dmin ~ Incid, data = EJSp)
 ```
 
 # [Question 2]{style="color: darkred;"}
-Based on the variables you created (*dmin* and *nn*), which is the most remote farm? and how did you conclude that?
+Based on the variables you created (*dmin* and *nn*), which is the most remote farm? and how did you conclude that? (hint, you can use the function `arrange()` to sort by a specific variable)
 
 ```{r answer q2, include=F, eval=F}
 EJSp %>% 
