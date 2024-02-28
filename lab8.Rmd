@@ -185,7 +185,7 @@ EJSp %>%
 
 # [Question 1]{style="color: darkred;"}
 
-Now do the same, but based on their incidence (*Inc*). Do you think there is a difference in the average distance between the positive and negative farms? what kind of test would you use to test this hypothesis? (hint: remember the tests we talked about on week 5)
+Now do the same, but based on their incidence (*Incid*, make sure its not interpreted as a numeric variable). Do you think there is a difference in the average distance between the positive and negative farms? what kind of test would you use to test this hypothesis? (hint: remember the tests we talked about on week 5)
 
 ```{r answer question 1, eval = F, include=F}
 EJSp %>% 
