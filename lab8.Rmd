@@ -6,7 +6,7 @@ output:
   html_document:
     toc: true
     toc_float: true
-    number_sections: true
+    # number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -206,7 +206,7 @@ EJSp %>%
   arrange(-dmin)
 ```
 
-## Joining spatial objects
+# Joining spatial objects
 
 So far we have two kind of spatial objects, we can extract the information for the points to the polygons by joining based on where they intersect, for this we can use the `st_join()` function. It is important that the two spatial objects are in the same CRS. We will check if the CRS for the polygon and points match
 
@@ -248,7 +248,7 @@ joinedSp %>%
 # [Question 3:]{style="color: darkred;"} 
 Which is the comarca (com) with highest proportion of infected?
 
-## Raster data:
+# Raster data:
 
 We use raster data to represent continuous values in a field. Raster are just a grid where each cell has a value and in a grid. The resolution of a raster just represent the size of the cells from the grid. We use raster data to represent values such as altitude, temperature, among other continuous values. Here we will use a raster for land cover from the study area. This raster was obtained from [diva-gis](http://diva-gis.org/) and you can get it from canvas.  
 To manipulate and process rasters, we will use the library `stars`, so make sure you have it installed using `install.package("stars")`.
