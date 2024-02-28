@@ -1,0 +1,307 @@
+---
+title: "Mapping data in R."
+author: "Pablo Gomez"
+format: 
+  revealjs:
+    theme: [dark, custom.scss]
+    footer: ""
+    pdf-separate-fragments: true
+editor: source
+title-slide-attributes:
+    data-background-image: img/bg_title.png
+---
+
+To see this slides online go to: [https://cadms.github.io/mpm207/s/w3.html](https://cadms.github.io/mpm207/s/w3.html)
+
+
+## Recap: Figures with ggplot {background-image="img/bg.png"}
+
+<br/>
+
+[Components needed to define a graphic:]{.black}
+
+::: incremental
+-   [*data*, the data set we will use to generate the figure]{.black}
+-   [*geometry*, or type of graphic we will generate (i.e. histogram, bar, scatter, etc..)]{.black}
+-   [*aesthetic or mapping*, variables or arguments that will be used for the figure for example: location, color, size, etc..]{.black}
+:::
+
+
+# Spatial Data{background-image="img/bg_title.png"}
+
+## Spatial data formats{background-image="img/bg.png"}
+
+<br/>
+
+:::: columns
+:::{.column width="50%"}
+[Vectors]{.black .fragment .fade-in fragment-index=1}
+![](img/GIS_vector.png){.fragment .fade-in fragment-index=1}
+:::
+
+:::{.column width="50%"}
+[Rasters]{.black .fragment .fade-in fragment-index=2}
+![](img/GIS_raster.png){.fragment .fade-in fragment-index=2}
+:::
+::::
+
+<!---
+
+## Spatial resolution{background-image="img/bg.png"}
+<br/>
+
+:::: columns
+:::{.column width="50%"}
+![](img/GIS_resolutionH.png)
+:::
+
+:::{.column width="50%"}
+![](img/GIS_resolutionL.png)
+:::
+::::
+
+--->
+
+
+## Vectors{background-image="img/bg.png"}
+
+<br/>
+
+:::: columns
+::: {.column width="33%"}
+[Point]{.black .fragment .fade-in fragment-index=1}  
+![](img/GIS_point.png){.fragment .fade-in fragment-index=1}
+:::
+
+::: {.column width="33%"}
+[Lines]{.black .fragment .fade-in fragment-index=2}  
+![](img/GIS_line.png){.fragment .fade-in fragment-index=2}
+:::
+
+::: {.column width="33%"}
+[Polygon]{.black .fragment .fade-in fragment-index=3}  
+![](img/GIS_poly.png){.fragment .fade-in fragment-index=3}
+:::
+::::
+
+## Rasters{background-image="img/bg.png"}
+
+<br/>
+
+:::: columns
+::: {.column width="33%"}
+![](img/rs-1.png){.fragment .fade-in fragment-index=1}
+:::
+
+::: {.column width="33%"}
+![](img/rs-2.png){.fragment .fade-in fragment-index=2}
+:::
+
+::: {.column width="33%"}
+![](img/rs-3.png){.fragment .fade-in fragment-index=3}
+:::
+::::
+
+## Rasters{background-image="img/bg.png"}
+
+<br/>
+
+:::: columns
+::: {.column width="33%"}
+![](img/rs-1.png)
+:::
+
+::: {.column width="33%"}
+![](img/rs-2.png)
+:::
+
+::: {.column width="33%"}
+![](img/rs-3g.png)
+:::
+::::
+
+## Loading the data{background-image="img/bg.png"}
+<br/>
+
+```{r echo=TRUE}
+library(sf)
+library(dplyr)
+
+# Loading the spatial data from the package
+MxSp <- st_read(system.file("data/MxShp.shp", package = "stnet")) 
+```
+
+
+## Format{background-image="img/bg.png"}
+<br/>
+
+```{r echo=T}
+head(MxSp)
+```
+
+
+## Spatial data in R{background-image="img/bg.png"}
+<br/>
+
+[The output shows:]{.black}  
+  
+  - `geometry type`[: The type of shapefile (either point data, lines or polygons).]{.black}  
+  - `dimension` [Dimensions used in the data.]{.black}  
+  - `Bounding box`[: The extent of our data.]{.black}  
+  - `CRS`[: The coordinate reference system.]{.black}  
+  - [And the first 10 features.]{.black}  
+  
+## Geometry type{background-image="img/bg.png"}
+<br/>
+
+:::: columns
+::: {.column width="33%"}
+[Point]{.black}  
+![](img/GIS_point.png)
+:::
+
+::: {.column width="33%"}
+[Lines]{.black}  
+![](img/GIS_line.png)
+:::
+
+::: {.column width="33%"}
+[Polygon]{.black}  
+![](img/GIS_poly.png)
+:::
+::::
+
+## Dimesion{background-image="img/bg.png"}
+<br/>
+
+![](img/w8/dim.png){fig-align="center"}
+
+## Bounding box{background-image="img/bg.png"}
+<br/>
+
+![](img/w8/bbox.png){fig-align="center"}
+
+## CRS: coordinate reference system{background-image="img/bg.png"}
+<br/>
+![](img/w8/crs.png){fig-align="center" width="70%"}
+
+## Data manipulation{background-image="img/bg.png"}
+
+<br/>
+
+```{r echo=T}
+# Filter to study area
+Area <- MxSp %>% # This is the data we will filter
+  filter(CVE_ENT %in% c('15', '12', '16')) %>%  # Filter the data to use the states with codes: 15, 12 y 16
+  st_transform(crs = st_crs(4326)) # transform to lat/long
+```
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r echo=F}
+data('captures')
+```
+
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "|1"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) +
+  geom_sf(data = Area, fill = NA, col = 'grey60') +
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') +
+  theme_void() +
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) +
+  labs(fill = 'Altitude')
+```
+
+![](img/w8/8p01.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "2"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + 
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') +
+  theme_void() +
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) +
+  labs(fill = 'Altitude')
+```
+
+![](img/w8/8p02.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "3"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + # Add the polygon
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') +
+  theme_void() +
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) +
+  labs(fill = 'Altitude')
+```
+
+![](img/w8/8p03.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "4"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + # Add the polygon
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') + # Add the points
+  theme_void() +
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) +
+  labs(fill = 'Altitude')
+```
+
+![](img/w8/8p04.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "5"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + # Add the polygon
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') + # Add the points
+  theme_void() + # theme for the plot
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) +
+  labs(fill = 'Altitude')
+```
+
+![](img/w8/8p05.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "6"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + # Add the polygon
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') + # Add the points
+  theme_void() + # theme for the plot
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) + # color for the gradient
+  labs(title = 'Map of the study area', fill = 'Altitude')
+```
+
+![](img/w8/8p06.png){fig-align="center"}
+
+## [Mapping the data]{style="color:black;"}{background-image="img/bg_2.png"}
+
+```{r eval = F, echo=T}
+#| code-line-numbers: "7"
+ggplot() + # call the ggplot2 function
+  geom_stars(data = Mxst) + # Add a layer for the raster
+  geom_sf(data = Area, fill = NA, col = 'grey60') + # Add the polygon
+  geom_sf(data = capturesSp, cex = 0.3, col = 'skyblue') + # Add the points
+  theme_void() + # theme for the plot
+  scale_fill_gradient(low = 'black', high = 'red', na.value = NA) + # color for the gradient
+  labs(title = 'Map of the study area', fill = 'Altitude') # labels for the figure
+```
+
+![](img/w8/8p07.png){fig-align="center"}

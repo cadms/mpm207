@@ -92,8 +92,10 @@ related with the current project.
 
 R studio can create several types of documents including: R scripts,
 text files, Markdown, among others. To create a new document you can go
-to the menu located at the upper left corner. In this lab we will be using an R Markdown document (.Rmd), so let's start creating one. A menu will show with all the different document types you can create.
-For now we will select the option *R Markdown...*.
+to the menu located at the upper left corner. In this lab we will be
+using an R Markdown document (.Rmd), so let's start creating one. A menu
+will show with all the different document types you can create. For now
+we will select the option *R Markdown...*.
 
 It might ask you to install a library if it's not already installed, so
 just click yes if it does. This will open a window where will ask for a
@@ -552,7 +554,8 @@ word document or pdf. **DO NOT SUBMIT IT AS Rmd.**
     Using R, provide a table displaying the information contained in the
     10 first rows of the six first columns.
 
-2.  What type of variable is the column Prev? provide the range of values for this variable in the data
+2.  What type of variable is the column Prev? provide the range of
+    values for this variable in the data
 
 3.  What happens when you use the function `summary()` on a variable of
     class factor? try using it on the variable *Com* and report your
@@ -570,3 +573,4 @@ word document or pdf. **DO NOT SUBMIT IT AS Rmd.**
 # Appendix I: Data dictionary
 
 ![](img/w3/dataDictionary.png)
+

@@ -319,3 +319,29 @@ summary(m1)
     farm. Provide the code, the results and an interpretation of your
     findings. Now, do the same but with TB incidence (using the same 3
     predictors)
+    
+    
+```{r}
+test <- wilcox.test(MEANfenced~Incid, data = EJ)
+
+test
+
+t.test(MEANfenced~Incid, data = EJ)
+
+EJ %>% 
+  lm(MEANfenced~Incid, data = .) %>% 
+  summary()
+
+boxplot(MEANfenced~Incid, data=EJ)
+
+table(EJ$Incid)
+
+hist(EJ$MEANfenced)
+
+EJ %>% 
+  glm(Incid~MEANfenced, data = ., family='binomial') %>% 
+  summary()
+
+test
+```
+

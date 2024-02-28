@@ -62,7 +62,7 @@ data.frame(
     "Introduction to spatial and space-time cluster analyses using SaTScan",
     "Introduction to social network analysis"
   ),
-  link = c("", "lab2.html", "lab3.html", "", "lab5.html", "", "", "", "", "")
+  link = c("", "lab2.html", "lab3.html", "", "lab5.html", "", "", "lab8.html", "", "")
     
   ),
   Software = c(
