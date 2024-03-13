@@ -99,19 +99,9 @@ To visualize the network we can use the function `plot()`.
 plot(net)
 ```
 
-This figure looks a bit messy, to make it more informative we can visualize dome of the parameters. We use the arguments `edge.arrow.size` to adjust the size of the arrowhead, `vertex.size` to adjust the node size, and `vertex.label` to remove the names of the nodes.  
-
-```{r}
-#make it clearer: adjust size, remove labels#
-plot(net, # Our network object
-     edge.arrow.size=0.2, # define the arrow size
-     vertex.size=4,  # the sie of the node
-     vertex.label=NA) # We remove the name of the nodes
-```
-
 # Network visualization
 
-We can use base R to make our figures, but since in this workshop we have been focusing on ggplot2, we will use the library ggraph which is based in ggplot2. The way the library `ggraph` works is very similar to `ggplot2`, we use the function `ggraph()` to set our empty canvas, same way we would do with the function `ggplot()` in ggplot2`. The library `ggraph` also introduces a bunch of new geometry tipes for both the nodes and the edges.
+We can use base R to make our figures, but since in this workshop we have been focusing on ggplot2, we will use the library ggraph which is based in ggplot2. The way the library `ggraph` works is very similar to `ggplot2`, we use the function `ggraph()` to set our empty canvas, same way we would do with the function `ggplot()` in ggplot2`. The library `ggraph` also introduces a bunch of new geometry types for both the nodes and the edges.
 
 ## Node attributes
 
@@ -132,7 +122,10 @@ We will use the indegree value to assign the node size. First we will calculate 
 ```{r}
 # First calculate the indegree for the nodes:
 net <- net %>% 
-  mutate(indegree = centrality_degree(mode = 'in', loops = F))
+  mutate(
+    indegree = centrality_degree(mode = 'in', loops = F),
+    outdegree = centrality_degree(mode = 'out', loops = F)
+  )
 
 # Now we use ggraph to visualize it in the network
 ggraph(net, layout = 'kk') + # this is our empty canvas
@@ -140,7 +133,6 @@ ggraph(net, layout = 'kk') + # this is our empty canvas
   geom_node_point(aes(color = farm_type, size = indegree)) + # Add the nodes
   scale_edge_width(range = c(0.01, 0.9)) # we set the range for the width of the edges
 ```
-
 
 ## Layouts
 
@@ -162,7 +154,9 @@ ggraph(net, layout = 'kk') +
 
 You can read more about the different layouts available [HERE](https://ggraph.data-imaginist.com/articles/Layouts.html)
 
-**Exercise:** Let's have a look at different layouts to see how the network changes. Try using a couple of different layouts to produce a different figure (i.e. 'fr', 'lgl', 'kk').    
+## Exercise 2:
+
+Let's have a look at different layouts to see how the network changes. Try using a couple of different layouts to produce a different figure (i.e. 'fr', 'lgl'). Submit two additional networks with the layout used in the title.   
 
 ## Edge attributes
 
@@ -176,7 +170,6 @@ ggraph(net, layout = 'kk') +
 ```
   
 
-**Exercise:** explore plotting the network using the different centrality measures to change its color or size.  
 
 # Further manipulation of the network
 
@@ -335,7 +328,9 @@ map + geom_sf(data = NodeSp, # name of our data
   ggtitle("Farms and their indegree") # the title of our plot
 ```
 
-**Exercise:** Make the same plot, but make the size of the nodes relative to outdegree
+## Exercise 3:
+
+Make the same plot, but make the size of the nodes relative to outdegree
 
 ## Adding the euclidean contacts
 
@@ -425,6 +420,62 @@ library(plotly)
 
 ggplotly(m)
 ```
+
+
+<!--- Mapping with leaflet
+
+```{r}
+library(leaflet)
+library(dplyr)
+
+mydf <- data.frame(Observation = c("A", "B"),
+                   InitialLat = c(62.469722,48.0975),
+                   InitialLong = c(6.187194, 16.3108),
+                   NewLat = c(51.4749, 51.4882),
+                   NewLong = c(-0.221619, -0.302621),
+                   stringsAsFactors = FALSE)
+
+mydf2 <- data.frame(group = c("A", "B"),
+                    lat = c(mydf$InitialLat, mydf$NewLat),
+                    long = c(mydf$InitialLong, mydf$NewLong))
+
+leaflet()%>%
+  addTiles() %>%
+  addPolylines(data = mydf2, lng = ~long, lat = ~lat, group = ~group)
+```
+
+```{r}
+stocks <- tibble(
+  time = as.Date("2009-01-01") + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+
+tidyr::gather(stocks, "stock", "price", -time)
+tidyr::gather(data = stocks, key = "stock", "price", -time)
+```
+
+
+```{r}
+e <- edge %>% count(id_orig, id_dest, O_Lat, O_Long, D_Lat, D_Long)
+
+d <- list(
+  e %>% 
+    mutate(mid = 1:n()) %>% 
+    select(mid, lat = O_Lat, lon = O_Long),
+  e %>% 
+    mutate(mid = 1:n()) %>% 
+    select(mid, lat = D_Lat, lon = D_Long) 
+) %>% 
+  do.call(rbind, .)
+
+leaflet()%>%
+  addTiles() %>%
+  addPolylines(data = d, lng = ~lon, lat = ~lat, group = ~mid)
+```
+
+--->
 
 
 <!--
