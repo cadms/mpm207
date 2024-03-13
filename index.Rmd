@@ -46,7 +46,7 @@ data.frame(
     "Feb 14",
     "Feb 21",
     "Feb 28",
-    "Mar 6",
+    "Mar 6", 
     "Mar 18"
   ),
   Topic = cell_spec(
@@ -62,7 +62,7 @@ data.frame(
     "Introduction to spatial and space-time cluster analyses using SaTScan",
     "Introduction to social network analysis"
   ),
-  link = c("", "lab2.html", "lab3.html", "", "lab5.html", "", "", "lab8.html", "", "")
+  link = c("", "lab2.html", "lab3.html", "", "lab5.html", "", "", "lab8.html", "", "lab10.html")
     
   ),
   Software = c(

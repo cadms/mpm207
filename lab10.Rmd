@@ -1,0 +1,647 @@
+---
+title: "Lab 10 - "
+author: "Pablo Gomez"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+
+In this lab we will start making our first network objects, obtain network statistics and some visualization of the data. We will use data from a library called `stnet` so make sure you have this and all the required libraries installed
+
+```{r installing libraries, eval=F}
+install.packages("tidygraph")
+install.packages("igraph")
+install.packages("purrr")
+install.packages("ggraph")
+install.packages("devtools")
+
+devtools::install_github("spablotemporal/stnet")
+
+```
+
+
+# Creating the network
+
+```{r message = F, warning = F}
+# Libraries we will use:
+library(dplyr) # for data manipulation
+library(ggplot2) # For making figures
+library(ggraph) # For visualization of the networks
+library(igraph) # for network analysis
+library(tidygraph) # tidyverse friendly network analysis
+library(purrr) # for data manipulation
+library(ggpubr)
+
+# Loading the data from the stnet package ------------
+# Load the data for nodes
+node <- stnet::SwinePrem %>% # load the data from the stnet library
+  mutate(id = as.character(id)) # change the id to variable to character
+# Load the data for edges
+edge <- stnet::SwineMov %>% 
+  mutate(id_orig = as.character(id_orig), id_dest = as.character(id_dest))
+```
+
+
+The data sets we will be using are:
+  
+  - `node` which includes the information of the farms 
+  - `edge` which includes the information for the movements between the farms.  
+
+We use the function `as_tbl_graph()` to create the network from a data.frame. This function takes as arguments:`x`  which requires the contacts data and assumes that contacts are directed. If we print the results, we will see a object from the class `tbl_graph`, which we will explain:
+
+```{r create the network}
+net <- as_tbl_graph(edge)
+
+net
+```
+
+The results of printing the object will show us the number of nodes and edges, we can see that our network has 40 nodes and 1611 edges. Then we can also see the attributes for the nodes (which in this case there is only the name) and the edges (which for this example has from, to, date, pigs.moved, type_orig, and type_dest).  
+
+## Adding extra attributes
+  
+We can treat this object like two data frames that are joined by an key or identification variable. Whenever we want to access one of the data frames to modify it, we can use either the function `activate()` or when using the pipes we can use `%N>%` to call the nodes or `%E>%` to call the edges. In the next example we will add the rest of the node information to our `tbl_graph`
+
+```{r}
+net <- net %N>% # <- Notice we are including 'N' inside our pipe to specify we want to access the nodes
+  left_join(node, by = c('name' = 'id')) # Now we join to the node data frame to include other variables
+```
+
+```{r eval = F}
+# We can ask for the nodes data specifically to see the changes
+net %N>% 
+  data.frame()
+```
+
+## Calculating centrality measures
+
+We can use other network centrality measures such as outdegree, closeness, betwenness, among others. In the following code chunk, we will calculate more centrality measures:
+
+```{r calculating other centrality measures}
+net <- net %>% # This is our entwork data
+  mutate(outdegree  = centrality_degree(mode = 'out', loops = F), # calculate the outdegree
+         closeness = centrality_closeness(), # calculate the closeness
+         betweenness = centrality_betweenness(), # calculate betweenness
+         Nbs = neighborhood.size(graph = .) # calculate the number of neighbors
+         )
+# lets have a look at our network with the new variables
+net
+```
+
+
+To visualize the network we can use the function `plot()`.  
+
+```{r}
+#plot network
+plot(net)
+```
+
+This figure looks a bit messy, to make it more informative we can visualize dome of the parameters. We use the arguments `edge.arrow.size` to adjust the size of the arrowhead, `vertex.size` to adjust the node size, and `vertex.label` to remove the names of the nodes.  
+
+```{r}
+#make it clearer: adjust size, remove labels#
+plot(net, # Our network object
+     edge.arrow.size=0.2, # define the arrow size
+     vertex.size=4,  # the sie of the node
+     vertex.label=NA) # We remove the name of the nodes
+```
+
+# Network visualization
+
+We can use base R to make our figures, but since in this workshop we have been focusing on ggplot2, we will use the library ggraph which is based in ggplot2. The way the library `ggraph` works is very similar to `ggplot2`, we use the function `ggraph()` to set our empty canvas, same way we would do with the function `ggplot()` in ggplot2`. The library `ggraph` also introduces a bunch of new geometry tipes for both the nodes and the edges.
+
+## Node attributes
+
+### Color
+
+We can get specific attributes from the `tbl_graph` inside the `aes()` argument, similar to what we would do for ggplot2. In the following plot, we will set the node color to the type of farm. Let's try it:  
+
+```{r}
+ggraph(graph = net) + # First we set our empty canvas
+  geom_edge_link() + # Add the edges
+  geom_node_point(aes(color = farm_type), size = 3) # add the nodes
+```
+
+### Node size
+
+We will use the indegree value to assign the node size. First we will calculate indegree using the function `centrality_degree()` with the argument `mode = "in"`, and we will also get rid of the loops with the argument `loops = F`.    
+
+```{r}
+# First calculate the indegree for the nodes:
+net <- net %>% 
+  mutate(indegree = centrality_degree(mode = 'in', loops = F))
+
+# Now we use ggraph to visualize it in the network
+ggraph(net, layout = 'kk') + # this is our empty canvas
+  geom_edge_link(aes(width = pigs.moved)) + # Add the edges
+  geom_node_point(aes(color = farm_type, size = indegree)) + # Add the nodes
+  scale_edge_width(range = c(0.01, 0.9)) # we set the range for the width of the edges
+```
+
+
+## Layouts
+
+We can change the position of the nodes using the argument `layout`. If we don't specify any layout, ggraph will automatically set the layout 'stress'. Force directed layouts place the nodes in fixed places based on various criteria. The layouts 'nicely' and 'kk' force the network in clear layouts, based on the position of the nodes in the network in terms of connectivity.  They also attempt to keep the distance between connected nodes fixed.
+
+```{r}
+# Plot with layout nicely
+ggraph(net, layout = 'nicely') +
+  geom_edge_link() + # Add the edges
+  geom_node_point(aes(color = farm_type), size = 3) + # add the nodes
+  labs(title = 'Layout nicely')
+
+# Plot with layout kk
+ggraph(net, layout = 'kk') +
+  geom_edge_link() + # Add the edges
+  geom_node_point(aes(color = farm_type), size = 3) +
+  labs(title = 'Layout KK')
+```
+
+You can read more about the different layouts available [HERE](https://ggraph.data-imaginist.com/articles/Layouts.html)
+
+**Exercise:** Let's have a look at different layouts to see how the network changes. Try using a couple of different layouts to produce a different figure (i.e. 'fr', 'lgl', 'kk').    
+
+## Edge attributes
+
+We can change the size of the edge to represent the number of pigs moved between nodes
+
+```{r}
+ggraph(net, layout = 'kk') +
+  geom_edge_link(aes(width = pigs.moved)) + # Add the edges
+  geom_node_point(aes(color = farm_type), size = 3) +
+  scale_edge_width(range = c(0.01, 0.9))
+```
+  
+
+**Exercise:** explore plotting the network using the different centrality measures to change its color or size.  
+
+# Further manipulation of the network
+
+We can use some of the functions for data manipulation such as `filter()`, since filtering uses boolean operations, we can use some network properties for the filtering
+
+## Filtering by edge variables
+
+We will use the function `filter()` to select only observations where there was more than 150 animals moved
+
+```{r}
+net %E>% # This is the network
+  filter(pigs.moved > 150) %>% # We filter the edges for only the ones with > 150 animals
+  # we visualize the graph:
+  ggraph() + 
+  geom_edge_link() +
+  geom_node_point(size = 4)
+```
+
+You will notice that there are a few of isolated nodes that does not connect to the main network, this is because we only filtered the edges, but not the nodes.sometimes we want this, but other times we would like to remove the noeds as well. For this we will add an extra line tot the code we previously did:
+
+```{r}
+net %E>% # This is the network
+  filter(pigs.moved > 150) %N>% # We filter the edges for only the ones with > 150 animals
+  filter(!node_is_isolated()) %>% # THIS IS THE LINE WE ADDED to filter the isolated nodes out 
+  # we visualize the graph:
+  ggraph() + 
+  geom_edge_link() +
+  geom_node_point(size = 4)
+```
+
+Notice that in the code I use both the operators `%N>%` and `%E>%` depending on what I am filtering.
+
+## Filtering by node neighborhood
+
+We can filter the network for the neighborhood of a specific node. The function `convert()` will convert the network to the nodes that are connected with a specific node. 
+
+```{r}
+id <- 1 # first we define the id of the node we want
+
+#then we can visualize its neighborhood:
+net %>%  # this is our network
+  convert( # We use the function convert() to subset our network
+    to_local_neighborhood, # we specify that we want to convert to a local neighborhood
+    node = id, # this is the node id we will filter by
+    order = 1, # this is the order of nbs
+    mode = 'all' # the type of contact
+  ) %>% 
+  # then we create a variable to color our index node:
+  mutate(index = ifelse(.tidygraph_node_index == id, '1', '0')) %>%  
+  # and visualize the network
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(col = index, shape = index), size = 5)
+```
+
+# Community detection
+
+In this section we will use different algorithms to identify communities in our network. 
+
+```{r}
+# First we need to simplify the network
+c <- net %E>%  # we call our network and activate the edges
+  mutate(N = as.integer(1)) %>%  # create a variable for the number of movements (each row is 1 movement)
+  convert(to_simple) %E>%  # now we will convert it to a simple network
+  mutate(weight = map_int(.orig_data, ~.x %>% pull(N) %>% sum())) %N>%  # We have to sum all the repeated movements
+  mutate(walktrap = factor(group_walktrap(weights = weight)), # use the walktrap algorithm for community detection
+         infomap = factor(group_infomap(weights = weight))) # use the infomap for community detection
+```
+
+Then we will create an empty list to fill with plots and compare the different algorithms.
+
+```{r}
+# Create the empty list
+CP <- list()
+# Make a plot for the edges only
+pc <- c %>% # our simplified network
+  ggraph(layout = 'nicely') + # call the ggraph function
+  geom_edge_link() + # add the edges
+  theme(legend.position = 'bottom') # set the legend position to bottom
+
+CP[['Infomap']] <- pc + # We call our plot with only the edges
+  geom_node_point(aes(col = infomap), size = 2) + # we add the nodes
+  labs(title = 'Infomap') # title of our plot
+
+CP[['Walktrap']] <- pc +
+  geom_node_point(aes(col = walktrap), size = 2) +
+  labs(title = 'Walktrap') 
+
+# We arrange our plots in a single figure
+ggarrange(plotlist = CP)
+```
+
+We can select specific communities to show by filtering by the newly created community variable.
+
+```{r}
+c %N>% 
+  filter(walktrap == '1') %>% # filter for community 1
+  ggraph(layout = 'nicely') + # call the ggraph function
+  geom_edge_link() + # add the edges
+  geom_node_point(aes(col = walktrap), size = 2) + # we add the nodes
+  theme(legend.position = 'bottom') + # set the legend position to bottom
+  labs(title = 'Subset of the nework for the community 1')
+```
+
+# Spatial representation of the network
+
+Now we will use the network we created and the spatial location of our farms to see the movements on a map.  
+We will be using the `sf` package to manipulate the spatial objects, and the `ggplot2` package for visualization.  
+In the `stnet` package there is a spatial polygons data, which includes the counties in the state of Iowa.  
+
+```{r}
+# Loading the packages
+library(sf) # Package for spatial objects
+library(ggplot2) # package for plots
+
+# We load the spatial object from the package stnet
+iowa <- st_read(system.file("data/Io.shp", package = "stnet"))
+
+# plot map using sf
+plot(iowa$geometry)
+```
+
+Next we will transform the nodes as a spatial points object, for this we use the function `st_to_sf()` and we need to specify the names of the columns that have the spatial coordinates.    
+
+```{r Transform nodes to spatial}
+NodeSp <- net %N>% # This is our node data.frame
+  mutate(indegree = centrality_degree(mode = 'in')) %>% # calculate the indegree
+  data.frame() %>% 
+  st_as_sf(coords = c("long", "lat"), # Variables for the coordinates
+           crs = st_crs(iowa)) # This is the CRS we are using
+```
+
+
+## Plotting our map
+
+One of the nice things of ggplot is that we can create a map and store it in an object and later we can keep adding layers to this map. So first we will create a map of the state.    
+
+```{r}
+map <- ggplot() +
+  geom_sf(data = iowa, # name of the spatial dataset
+          color="grey20", # color of the shape border
+          fill="white", # fill of the shape
+          size=0.4) + # width of the border
+  theme_void() # This is a theme form ggplot
+```
+
+
+## Plot the nodes
+
+Once we have the base map of the state, we can add the spatial points data we created previously. We can specify the size of the points using a variable.  
+
+```{r}
+map + geom_sf(data = NodeSp, # name of our data
+              aes(color = farm_type, # we color the nodes by farm type
+                  size = indegree)) +
+  ggtitle("Farms and their indegree") # the title of our plot
+```
+
+**Exercise:** Make the same plot, but make the size of the nodes relative to outdegree
+
+## Adding the euclidean contacts
+
+We can also add the connection between the nodes represented by euclidean distance (fancy word for straight line). But first we will need to add the coordinates to the edge data using joins:  
+
+```{r add coordinates to edges}
+# First we need to include the information of origins and destination
+edge <- edge %>%
+  left_join(node[c("id", "lat", "long")], by = c("id_orig" = "id")) %>%
+  rename(O_Lat = lat, O_Long = long) %>%
+  left_join(node[c("id", "lat", "long")], by = c("id_dest" = "id")) %>%
+  rename(D_Lat = lat, D_Long = long)
+```
+
+In the previous lab we calculated the euclidean distance between each pair of farms involved in a movement. Here we will visualize those movements.  
+
+```{r}
+# The function geom_segment adds a straight line between two coordinates:
+map +
+  geom_segment(data=edge, 
+               aes(x=O_Long, y=O_Lat, # this is where the line starts
+                   xend=D_Long, yend=D_Lat)) # this is where it ends
+
+# We can add the information of the type of movement to change the color of the line and the number of animals for the transparency
+map +
+  geom_segment(data=edge, 
+               aes(x=O_Long, y=O_Lat,
+                   xend=D_Long, yend=D_Lat, 
+                   color=type_orig,
+                   alpha = pigs.moved))
+```
+
+## Putting everything together
+
+Now we will add both the farm locations and the direction of the movements between the farms on a map.  
+
+```{r}
+#plot nodes & edges - add both commands geom_segment and geom_point#
+map +
+  geom_segment(data=edge, 
+               aes(x=O_Long, y=O_Lat,
+                   xend=D_Long, yend=D_Lat,
+                   alpha = pigs.moved), 
+               show.legend=F) +
+  geom_sf(data = NodeSp, 
+          aes(color = farm_type, 
+              size = indegree), show.legend = "point")
+```
+
+
+## Subsetting the data
+
+Sometimes we are interested in a particular type of movements. We can subset this using the dplyr functions such as `filter()`. In the next plot we will select only the movements that comes from sow farms.  
+
+```{r}
+# plot movements from sow farms only
+map +
+  edge %>%
+  filter(type_orig == "sow farm") %>%
+  geom_segment(data = ., 
+               aes(x=O_Long, y=O_Lat, 
+                   xend=D_Long, yend=D_Lat, 
+                   color = type_orig), show.legend = F) +
+  geom_sf(data = NodeSp, 
+          aes(color = farm_type), size=3, show.legend = "point")
+```
+  
+We can be even more specific and filter the movements from sow farms that are directed to GDU.  
+We will also add at the end the function `ggplotly()` from the package `plotly` to obtain a map were we can zoom and hover over some features to obtain more information.  
+
+  
+```{r warning=F, message=F}
+# We store the map of movements between GDU to sow farm
+m <- map +
+  edge %>%
+  filter(type_orig == 'GDU', type_dest == "sow farm") %>%
+  geom_segment(data = ., aes(x=O_Long, y=O_Lat,
+                             xend=D_Long, yend=D_Lat, 
+                             color = type_orig), show.legend = F) +
+  geom_sf(data = NodeSp, 
+          aes(color = farm_type),
+          size=3, show.legend = "point") +
+  ggtitle("GDU to Sow farm Movments")
+
+# We use the function from plotly to transform our map into n interactive map.  
+library(plotly)
+
+ggplotly(m)
+```
+
+
+<!--
+
+# Bea's lab
+
+MPM 207. Lab 10.
+OBJECTIVES
+	Review the general concepts related to social network analysis and its use in epidemiology
+	Be able to calculate and interpret centrality measures and other network metrics and use them for prioritizing interventions
+	Explore the impact that network structure may have in disease spread
+
+INSTRUCTIONS
+	Follow the guidelines, do the exercises, and answer the questions. Please send the answers using CANVAS before 3:40pm, March 13nd.
+	Do not hesitate to ask the instructor if you have any questions.
+
+
+
+A research team is trying to better understand the role that wildlife-domestic contacts may have in tuberculosis (bTB) transmission/spread. They selected a cattle farm with historical bTB problems that is located within a very famous hunting state in the study region. They trapped some wild boars and placed GPS collars on them. Similarly, they placed GPS collars on the cattle to monitor where and when wild boar and cattle were having potential “effective contacts” for bTB transmission (note that “effective contact” was defined as contact between two animals at a distance of less than 1 meter, and lasting more than 5 minutes). As a result, they were able to create the network entitled “wb-cattle contacts”, which is the network of contacts between wild boars and cattle that we will be exploring today.
+
+Once installed Gephi (https://gephi.org/users/install/) open the program and become familiar with the software using the “Quick start” tutorial (pdf doc in canvas and also available here: https://gephi.org/users/quick-start/. Please follow the instructions in the tutorial and do the exercises to complete all the steps and learn how to import data, change layouts, compute network metrics, change colors and sizes of nodes, use community detection algorithms, etc. You should be able to do all the tutorial in 15-20 mins (do not spend much more time on this).
+
+Now, you will import your own network. Create a “New project”. Import your file by selecting File  import spreadsheet. Select “wb-cattle contacts” excel file (provided in canvas). First, we will be importing the node table: select “node table” as sheet and “nodes table” in the import as drop down menu, then click Next and Finish (leave all by default options in the import settings 2). Select “Undirected” as graph type and select “New workspace” to import your network (all other, leave the default parameters). Once you have imported the nodes, we will import the edge table. Repeat the import process using File  import spreadsheet. This time select “edge table” in your sheet and “edges table” in the Import as option, click next and finish (leave all other options as by default, just make sure that the graph type remains as “undirected”). In the more options select Sum as the Edges merge strategy and use “Append to existing workspace” to add the edge info to your previously imported nodes (leave all other parameters unchanged/by default). 
+
+Once you have incorporated the network into the program, we will visualize and play a bit with this network. Select 
+“Fruchterman Reingold” in the layout (and Run it). If it Runs for more than 10 seconds, click on “Stop”. Then, select Force atlas (and Run it). Try also with other layouts (e.g. Yifan Hu etc.) till you find one you like most. If you want to learn more about the types of layouts, advantages/disadvantages and usability you can read: https://gephi.org/tutorials/gephi-tutorial-layouts.pdf. Now, color your nodes and edges using the modularity to identify “communities” or groups of nodes that are highly connected with each other (tip: first go to Statistics  Modularity  Run (leave all other parameters by default); then go to Nodes  Partition  Modularity class  Apply). Also change the size of your nodes based on the degree value (tip: go to Nodes  size    Ranking  Degree, use min size 5 and max of 15). Add also the labels to the graph (remember that you can easily change the font size with the font size scale bar below the graph). Now run some additional node metrics/statistics for each node (i.e. Avg. clustering coefficient and eigenvector centrality). Based on the graph and the node metrics (you can see those in the “Data Laboratory” section), respond to question 1 and 2.  
+
+
+
+QUESTIONS
+
+
+1.	Based on the degree and line values which animal seems to be the most “important” for potential disease transmission if it were infected? Provide the network graph and metrics to support your response.
+
+
+
+2.	What would happen if you remove (e.g. slaughter or vaccinate to provide full immunity) the “most important” animal from the network? Provide the resultant network graph and metrics after removing this animal [remove that node and its contacts from the current network by “right click” over the node  delete]. How does the structure of the network change? (try to use different layouts to better display those changes). What would be your recommendations to further prevent bTB at the wild-domestic interface?
+
+
+
+
+
+Remember to send the assignment before 3:40pm, March 13th 
+
+
+```{r}
+n <- pabloverse::read_sheets("labs/Lab 10/wb-cattle contacts.xlsx")
+
+n$`edge table` %>% 
+  count(Type)
+```
+
+```{r}
+library(tidygraph)
+library(ggraph)
+
+# Creating the graph ------------
+g <- tbl_graph(
+  nodes = n$`node table`, 
+  edges = n$`edge table`
+)
+
+# Visualizing the graph --------
+g %>% 
+  ggraph(layout = "fr") +
+  geom_edge_link() +
+  geom_node_point()
+```
+
+```{r modularity}
+g %N>% 
+  mutate(
+    comp = tidygraph::group_components(),
+    walktrap = factor(group_walktrap()),
+    degree = centrality_degree()
+  ) %>% 
+  ggraph() +
+  geom_edge_link() +
+  # geom_node_point(aes(col = walktrap, size = degree)) +
+  geom_node_label(
+    aes(label = Label, size = degree, fill = walktrap), 
+    label.r = unit(0.6, "lines")
+  )
+```
+
+```{r}
+g %N>% 
+  filter(Id != 1) %>% 
+  mutate(
+    comp = tidygraph::group_components(),
+    walktrap = factor(group_walktrap()),
+    degree = centrality_degree()
+  ) %>% 
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(col = walktrap, size = degree)) +
+  geom_node_text(aes(label = Label, size = degree))
+```
+
+
+
+# 2024
+
+```{r}
+EJ <- read.csv("data/dataTb.csv") 
+
+EJ
+count(EJ, Type)
+count(EJ, goat)
+count(EJ, sheep)
+count(EJ, pig)
+```
+
+
+```{r play algos}
+
+play_forestfire(n = 80, p_forward = 0.3, growth = 1) %N>% 
+  mutate(
+    degree = centrality_degree()
+  ) %>% 
+  ggraph(layout = "nicely") +
+  geom_edge_link(alpha = 0.1) +
+  geom_node_point(aes(size = degree), alpha = 0.8)
+
+play_growing(n = 20, growth = 4) %N>% 
+  mutate(
+    degree = centrality_degree()
+  ) %>% 
+  ggraph(layout = "nicely") +
+  geom_edge_link(alpha = 0.1) +
+  geom_node_point(aes(size = degree), alpha = 0.8)
+```
+
+# Network modeling
+
+```{r example}
+library(EpiModel)
+# Initialize the network
+nw <- network_initialize(n = 500)
+# Edge distribution
+formation <- ~edges + concurrent + degrange(from=4)
+target.stats <- c(175, 110, 0)
+coef.diss <- dissolution_coefs(dissolution = ~offset(edges), duration = 50)
+coef.diss
+```
+
+```{r}
+g %N>% 
+  mutate(degree = centrality_degree()) %>% 
+  data.frame() %>% 
+  pull(degree) %>% mean
+
+formation <- ~edges
+
+target.stats <- c(1.88 * (25/2))
+
+coef.diss <- dissolution_coefs(dissolution = ~offset(edges), duration = 2)
+
+```
+
+## Estimation
+
+```{r}
+gn <- g %>% 
+  intergraph::asNetwork()
+
+est <- netest(gn, formation, target.stats, coef.diss)
+```
+
+## Epidemic simulation
+
+```{r}
+vn <- rep(x = "s", length(g))
+vn[5] <- "i"
+```
+
+
+```{r}
+# parameters
+param <- param.net(inf.prob = 0.2, act.rate = 2, rec.rate = 0.15)
+# initial conditions
+init <- init.net(.num = 1) # random infection
+init <- init.net(status.vector = vn) # deterministic
+# control settings ----------
+control <- control.net(
+  type = "SIS", # type of disease
+  nsims = 50, # number of simulations
+  nsteps = 50 # number of steps per sim
+)
+
+# Simulate the epidemic
+sim <- netsim(
+  x = est, 
+  param = param, 
+  init = init, 
+  control = control
+)
+
+sim
+```
+
+```{r}
+plot(sim)
+```
+
+```{r}
+par(mfrow = c(1, 2), mar = c(0, 0, 0, 0))
+plot(sim, type = "network", col.status = TRUE, at = 1, sims = 1)
+plot(sim, type = "network", col.status = TRUE, at = 50, sims = 1)
+```
+
+```{r}
+summary(sim, at = 50)
+```
+
+--->
+
+
+
+
