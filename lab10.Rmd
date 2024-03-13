@@ -154,7 +154,7 @@ ggraph(net, layout = 'kk') +
 
 You can read more about the different layouts available [HERE](https://ggraph.data-imaginist.com/articles/Layouts.html)
 
-## Exercise 2:
+## Exercise 1:
 
 Let's have a look at different layouts to see how the network changes. Try using a couple of different layouts to produce a different figure (i.e. 'fr', 'lgl'). Submit two additional networks with the layout used in the title.   
 
@@ -328,7 +328,7 @@ map + geom_sf(data = NodeSp, # name of our data
   ggtitle("Farms and their indegree") # the title of our plot
 ```
 
-## Exercise 3:
+## Exercise 2:
 
 Make the same plot, but make the size of the nodes relative to outdegree
 
